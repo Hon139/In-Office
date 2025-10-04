@@ -1,9 +1,5 @@
 **/.DS_Store
-<<<<<<< HEAD
 node_modules
 package-lock.json
 npm-debug.log
 .env
-=======
-.node_modules
->>>>>>> 98c6684 (moving sprite)
