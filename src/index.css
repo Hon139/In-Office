@@ -23,3 +23,7 @@ body {
     /* Hide the gap for font descenders. */
     display: block;
 }
+
+#jitsi-meeting {
+    position: absolute;
+}

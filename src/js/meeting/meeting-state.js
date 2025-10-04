@@ -1,30 +1,34 @@
 
 
+let active = false;
+let currentMeeting = null;
 
-export class MeetingState {
-    constructor () {
-        this.roomName = "";
-        this.displayName = "Default User";
-        this.activeMeeting=false;
-        this.email = "";
+const state = {
+  currentRoom: "creativeandcoolmeetingroom",
+  activateMeeting: async function () {
+    if (!active)  {
+        console.log("activating meeting...")
+        active = true;
+        console.log(this);
+        currentMeeting = await new JitsiMeetExternalAPI("meet.jit.si", {
+          roomName: this.currentRoom,
+          width: 540,
+          height: 540,
+          parentNode: document.querySelector("#jitsi-meeting")
+        })
     }
+    return active;
+  },
+  deactivateMeeting: async function () {
+    if (active) {
+        console.log("deactivating meeting...")
 
-    // attach_to_id should be set to ... when
-    function connect(attach_to_id) {
-        const api = new JitsiMeetExternalAPI("meet.jit.si/HTVX", {
-            roomName : this.roomName,
-            parentNode: attach_to_id,
-            userInfo : {
-                displayName: this.displayName;
-                email: this.email;
-            }
-        });
-
+        currentMeeting.executeCommand('hangup');
+        currentMeeting.dispose();
+        active = false;
     }
+  }
 
-    function disconnect() {
-        this.activeMeeting=false;
-    }
 }
 
-
+export const JitsiState = state
