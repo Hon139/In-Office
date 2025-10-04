@@ -13,8 +13,8 @@ export class Border extends me.Entity {
         this.body = new me.Body(this);
         this.body.addShape(new me.Rect(0, 0, this.width, this.height));
         this.body.setStatic(true);
-        this.body.setCollisionType(me.collision.types.WORLD_SHAPE);
         this.body.setCollisionMask(me.collision.types.PLAYER_OBJECT);
+        this.body.collisionType = me.collision.types.WORLD_SHAPE;
     }
 
     draw(renderer) {
@@ -25,6 +25,7 @@ export class Border extends me.Entity {
     }
 
     onCollision(response, other) {
+        console.log("Border.onCollision", { border: this, other });
     }
 }
 

@@ -26,6 +26,8 @@ export default class RoomScreen extends me.Stage {
         me.game.world.addChild(player, 10);
 
     const rect = new SimpleRect(20, 20, 120, 80, "#55aaff");
+    const border = new Border(0, 0, 800, 20, "#000000ff");
+    me.game.world.addChild(border, 5);
     // const door = new Door(400, 200, 80, 120, "#ffaa55", "play");
     me.game.world.addChild(rect, 5);
     // me.game.world.addChild(door, 5);

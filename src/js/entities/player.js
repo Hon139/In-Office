@@ -11,8 +11,8 @@ export class Player extends me.Sprite {
     // physics body & hitbox
     this.body = new me.Body(this);
     this.body.addShape(new me.Rect(0, 0, this.width, this.height));
-    // this.body.setCollisionType(me.collision.types.PLAYER_OBJECT);
-    // this.body.setCollisionMask(me.collision.types.WORLD_SHAPE);
+    this.body.setCollisionMask(me.collision.types.WORLD_SHAPE);
+    this.body.collisionType = me.collision.types.PLAYER_OBJECT;
     // movement tuning
     this.body.setMaxVelocity(2, 2);  // pixels/sec
     this.body.setFriction(0.0, 0.0);     // top-down feel
