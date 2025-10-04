@@ -20,7 +20,8 @@ export class Border extends me.Entity {
     draw(renderer) {
         renderer.save();
         renderer.setColor(this.color);
-        renderer.fillRect(this.pos.x, this.pos.y, this.width, this.height);
+        // draw at local coordinates so it aligns with the entity transform
+        renderer.fillRect(this.x, this.y, this.width, this.height);
         renderer.restore();
     }
 
