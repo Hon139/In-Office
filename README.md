@@ -27,6 +27,7 @@ See [Vite Configuration Reference](https://vite.dev/config/).
 
 ```sh
 npm install
+cp template.env .env 
 ```
 
 ### Compile and Hot-Reload for Development
