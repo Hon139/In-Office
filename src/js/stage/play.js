@@ -15,7 +15,7 @@ export default class PlayScreen extends me.Stage {
 
     // Multiplayer
     this.ghosts = new Map();
-    this.net = new SocketNet("ws://localhost:3000"); // ← your WS URL (wss:// in prod)
+    this.net = new SocketNet(window.CONFIG.WS_URL); // ← your WS URL (wss:// in prod)
     const name = "Guest" + Math.floor(Math.random() * 1000);
     await this.net.connect({ room: "main", name, color: "#8b5cf6" });
 
@@ -43,7 +43,6 @@ export default class PlayScreen extends me.Stage {
     me.input.bindKey(me.input.KEY.W,     "up");
     me.input.bindKey(me.input.KEY.DOWN,  "down");
     me.input.bindKey(me.input.KEY.S,     "down");
-<<<<<<< HEAD
 
     // Throttle state sends
     this.lastSend = 0;
@@ -75,7 +74,6 @@ export default class PlayScreen extends me.Stage {
   onDestroyEvent() {
     this.net?.disconnect();
     me.input.unbindAll();
-=======
 
     // Throttle state sends
     this.lastSend = 0;
@@ -105,7 +103,6 @@ export default class PlayScreen extends me.Stage {
   }
 
   onDestroyEvent() {
-<<<<<<< HEAD
     me.input.unbindKey(me.input.KEY.LEFT);
     me.input.unbindKey(me.input.KEY.A);
     me.input.unbindKey(me.input.KEY.RIGHT);
@@ -114,10 +111,7 @@ export default class PlayScreen extends me.Stage {
     me.input.unbindKey(me.input.KEY.W);
     me.input.unbindKey(me.input.KEY.DOWN);
     me.input.unbindKey(me.input.KEY.S);
->>>>>>> 98c6684 (moving sprite)
-=======
     this.net?.disconnect();
     me.input.unbindAll();
->>>>>>> a3ce567 (networking)
   }
 }
