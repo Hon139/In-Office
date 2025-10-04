@@ -4,10 +4,12 @@ import * as me from "melonjs";
 export class Door extends me.Entity {
     constructor(x, y, w, h, color = "#cc4444", stage) {
         super(x, y, { width: w, height: h });
-        this.anchorPoint.set(0, 0);
         this.floating = false;
         this.color = color;
         this.stage = stage;
+
+        // Set anchor point before creating body
+        this.anchorPoint.set(0, 0);
 
         // create a static body for collisions
         this.body = new me.Body(this);
@@ -21,14 +23,14 @@ export class Door extends me.Entity {
         renderer.save();
         renderer.setColor(this.color);
         // draw at local coordinates so it aligns with the entity transform
-        renderer.fillRect(this.x, this.y, this.width, this.height);
+        renderer.fillRect(0, 0, this.width, this.height);
         renderer.restore();
     }
 
     // called when something collides with this door
     onCollision(response) {
         console.log("collision with door");
-        me.state.change(this.stage);
+        // me.state.change(this.stage);
         return false; 
     }
 }

@@ -35,9 +35,14 @@ export class Player extends me.Sprite {
     return super.update(dt);
   }
 
-  onCollision() {
+  onCollision(response, other) {
     // default: let collisions pass through visually (no physical response)
+    if (other.body.collisionType === me.collision.types.WORLD_SHAPE) {
+      // uncomment the line below to log collisions with world shapes
+      console.log("collided with world shape", other);
+      return true;
+    }
   
-    return true;
+    return false;
   }
 }
