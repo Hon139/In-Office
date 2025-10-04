@@ -77,18 +77,35 @@ export default class PlayScreen extends me.Stage {
     me.input.unbindAll();
 =======
 
-    // disable gravity
-    me.game.world.gravity.set(0, 0);
+    // Throttle state sends
+    this.lastSend = 0;
+    this.sendHz = 10; // 10 updates per second
+    this.lastX = this.me.pos.x; this.lastY = this.me.pos.y;
+  }
 
-    // add player
-    const player = new Player(100, 100);
-    me.game.world.addChild(player, 10);
+  spawnGhost(p) {
+    if (p.id === this.net.uid) return; // don't spawn self
+    if (this.ghosts.has(p.id)) return;
+    const g = new Ghost(p.x, p.y, { color: p.color, size: 32 });
+    me.game.world.addChild(g, 9);
+    this.ghosts.set(p.id, g);
+  }
 
-    // center camera on player
-    me.game.viewport.follow(player.pos, me.game.viewport.AXIS.BOTH, 0.15);
+  update(dt) {
+    // your Player.update handles movement; just send position if changed (throttled)
+    const now = me.timer.getTime();
+    const moved = (Math.abs(this.me.pos.x - this.lastX) > 1) || (Math.abs(this.me.pos.y - this.lastY) > 1);
+    if (moved && now - this.lastSend > 1000 / this.sendHz) {
+      this.lastSend = now;
+      this.lastX = this.me.pos.x; this.lastY = this.me.pos.y;
+      const dir = "D"; // optional: compute from keys
+      this.net.sendState({ x: this.me.pos.x, y: this.me.pos.y, dir });
+    }
+    return super.update(dt);
   }
 
   onDestroyEvent() {
+<<<<<<< HEAD
     me.input.unbindKey(me.input.KEY.LEFT);
     me.input.unbindKey(me.input.KEY.A);
     me.input.unbindKey(me.input.KEY.RIGHT);
@@ -98,5 +115,9 @@ export default class PlayScreen extends me.Stage {
     me.input.unbindKey(me.input.KEY.DOWN);
     me.input.unbindKey(me.input.KEY.S);
 >>>>>>> 98c6684 (moving sprite)
+=======
+    this.net?.disconnect();
+    me.input.unbindAll();
+>>>>>>> a3ce567 (networking)
   }
 }
