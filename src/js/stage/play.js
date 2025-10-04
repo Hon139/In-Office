@@ -43,6 +43,7 @@ export default class PlayScreen extends me.Stage {
     me.input.bindKey(me.input.KEY.W,     "up");
     me.input.bindKey(me.input.KEY.DOWN,  "down");
     me.input.bindKey(me.input.KEY.S,     "down");
+<<<<<<< HEAD
 
     // Throttle state sends
     this.lastSend = 0;
@@ -74,5 +75,28 @@ export default class PlayScreen extends me.Stage {
   onDestroyEvent() {
     this.net?.disconnect();
     me.input.unbindAll();
+=======
+
+    // disable gravity
+    me.game.world.gravity.set(0, 0);
+
+    // add player
+    const player = new Player(100, 100);
+    me.game.world.addChild(player, 10);
+
+    // center camera on player
+    me.game.viewport.follow(player.pos, me.game.viewport.AXIS.BOTH, 0.15);
+  }
+
+  onDestroyEvent() {
+    me.input.unbindKey(me.input.KEY.LEFT);
+    me.input.unbindKey(me.input.KEY.A);
+    me.input.unbindKey(me.input.KEY.RIGHT);
+    me.input.unbindKey(me.input.KEY.D);
+    me.input.unbindKey(me.input.KEY.UP);
+    me.input.unbindKey(me.input.KEY.W);
+    me.input.unbindKey(me.input.KEY.DOWN);
+    me.input.unbindKey(me.input.KEY.S);
+>>>>>>> 98c6684 (moving sprite)
   }
 }
