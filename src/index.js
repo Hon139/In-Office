@@ -5,7 +5,17 @@ import { resources } from "./resources.js";
 
 const JitsiState = {
   active: false,
-  currentRoom: ""
+  currentRoom: "",
+  activateMeeting: () => {
+    console.log("activating meeting...")
+    const api = new JitsiMeetExternalAPI("meet.jit.si/teaaaaaam", {
+      roomName: "Hackthevalleytestroom",
+      width: 300,
+      height: 300,
+      parentNode: document.querySelector("#jitsi-meeting")
+    })
+  }
+
 }
 
 
