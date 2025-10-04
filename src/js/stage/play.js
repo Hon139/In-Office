@@ -1,13 +1,42 @@
 import * as me from "melonjs";
-import { Player } from "../entities/player.js";
 import { MeetingAnchor } from "../entities/meeting-anchor.js"
+import { SocketNet } from "../net.js";
+import { Ghost } from "../entities/ghost.js";
+import { Player } from "../entities/player.js"; // your existing local player
+
 
 export default class PlayScreen extends me.Stage {
-  onResetEvent() {
-    // simple background (optional)
+  async onResetEvent() {
+    me.game.world.gravity.set(0, 0);
     me.game.world.addChild(new me.ColorLayer("bg", "#202025"), 0);
 
-    // input (arrow keys & WASD)
+    // Local player
+    this.me = new Player(120, 120);
+    me.game.world.addChild(this.me, 10);
+    me.game.viewport.follow(this.me.pos, me.game.viewport.AXIS.BOTH, 0.15);
+
+    // Multiplayer
+    this.ghosts = new Map();
+    this.net = new SocketNet("ws://localhost:3000"); // ← your WS URL (wss:// in prod)
+    const name = "Guest" + Math.floor(Math.random() * 1000);
+    await this.net.connect({ room: "main", name, color: "#8b5cf6" });
+
+    // Handle server events
+    this.net.onEvents((evt) => {
+      if (evt.type === "init") {
+        evt.players.forEach((p) => this.spawnGhost(p));
+      } else if (evt.type === "add") {
+        this.spawnGhost(evt.player);
+      } else if (evt.type === "upd") {
+        const g = this.ghosts.get(evt.player.id);
+        if (g) g.setTarget(evt.player.x, evt.player.y);
+      } else if (evt.type === "del") {
+        const g = this.ghosts.get(evt.uid);
+        if (g) { me.game.world.removeChild(g); this.ghosts.delete(evt.uid); }
+      }
+    });
+
+    // Input bindings (if not already)
     me.input.bindKey(me.input.KEY.LEFT,  "left");
     me.input.bindKey(me.input.KEY.A,     "left");
     me.input.bindKey(me.input.KEY.RIGHT, "right");
@@ -17,29 +46,35 @@ export default class PlayScreen extends me.Stage {
     me.input.bindKey(me.input.KEY.DOWN,  "down");
     me.input.bindKey(me.input.KEY.S,     "down");
 
-    // disable gravity
-    me.game.world.gravity.set(0, 0);
+    // Throttle state sends
+    this.lastSend = 0;
+    this.sendHz = 10; // 10 updates per second
+    this.lastX = this.me.pos.x; this.lastY = this.me.pos.y;
+  }
 
-    // add player
-    const player = new Player(100, 100);
-    me.game.world.addChild(player, 10);
+  spawnGhost(p) {
+    if (p.id === this.net.uid) return; // don't spawn self
+    if (this.ghosts.has(p.id)) return;
+    const g = new Ghost(p.x, p.y, { color: p.color, size: 32 });
+    me.game.world.addChild(g, 9);
+    this.ghosts.set(p.id, g);
+  }
 
-    // Add a portal into the thing
-    const meetingAnchor = new MeetingAnchor(200, 200);
-    me.game.world.addChild(meetingAnchor, 9);
-
-    // center camera on player
-    me.game.viewport.follow(player.pos, me.game.viewport.AXIS.BOTH, 0.15);
+  update(dt) {
+    // your Player.update handles movement; just send position if changed (throttled)
+    const now = me.timer.getTime();
+    const moved = (Math.abs(this.me.pos.x - this.lastX) > 1) || (Math.abs(this.me.pos.y - this.lastY) > 1);
+    if (moved && now - this.lastSend > 1000 / this.sendHz) {
+      this.lastSend = now;
+      this.lastX = this.me.pos.x; this.lastY = this.me.pos.y;
+      const dir = "D"; // optional: compute from keys
+      this.net.sendState({ x: this.me.pos.x, y: this.me.pos.y, dir });
+    }
+    return super.update(dt);
   }
 
   onDestroyEvent() {
-    me.input.unbindKey(me.input.KEY.LEFT);
-    me.input.unbindKey(me.input.KEY.A);
-    me.input.unbindKey(me.input.KEY.RIGHT);
-    me.input.unbindKey(me.input.KEY.D);
-    me.input.unbindKey(me.input.KEY.UP);
-    me.input.unbindKey(me.input.KEY.W);
-    me.input.unbindKey(me.input.KEY.DOWN);
-    me.input.unbindKey(me.input.KEY.S);
+    this.net?.disconnect();
+    me.input.unbindAll();
   }
 }
