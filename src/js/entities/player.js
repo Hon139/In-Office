@@ -9,12 +9,19 @@ export class Player extends me.Sprite {
     });
 
     this.resize(32, 32);
+    const canvas = me.video.createCanvas(32, 32);
+    const ctx = canvas.getContext("2d");
+    ctx.fillStyle = "#93c5fd"; ctx.fillRect(0, 0, 32, 32);
+
+    this.anchorPoint.set(0, 0);
 
     // physics body & hitbox
     this.body = new me.Body(this);
     this.body.addShape(new me.Rect(0, 0, this.width, this.height));
-    this.body.setCollisionMask(me.collision.types.WORLD_SHAPE);
     this.body.collisionType = me.collision.types.PLAYER_OBJECT;
+    this.body.setCollisionMask(me.collision.types.WORLD_SHAPE
+      | me.collision.types.PLAYER_OBJECT
+    );
     // movement tuning
     this.body.setMaxVelocity(2, 2);  // pixels/sec
     this.body.setFriction(0.0, 0.0);     // top-down feel
@@ -59,13 +66,6 @@ export class Player extends me.Sprite {
   }
 
   onCollision(response, other) {
-    // default: let collisions pass through visually (no physical response)
-    if (other.body.collisionType === me.collision.types.WORLD_SHAPE) {
-      // uncomment the line below to log collisions with world shapes
-      console.log("collided with world shape", other);
-      return true;
-    }
-  
-    return false;
+    return true;
   }
 }
