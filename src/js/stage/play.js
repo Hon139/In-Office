@@ -1,5 +1,6 @@
 import * as me from "melonjs";
 import { Player } from "../entities/player.js";
+import { MeetingAnchor } from "../entities/meeting-anchor.js"
 
 export default class PlayScreen extends me.Stage {
   onResetEvent() {
@@ -22,6 +23,10 @@ export default class PlayScreen extends me.Stage {
     // add player
     const player = new Player(100, 100);
     me.game.world.addChild(player, 10);
+
+    // Add a portal into the thing
+    const meetingAnchor = new MeetingAnchor(200, 200);
+    me.game.world.addChild(meetingAnchor, 9);
 
     // center camera on player
     me.game.viewport.follow(player.pos, me.game.viewport.AXIS.BOTH, 0.15);
