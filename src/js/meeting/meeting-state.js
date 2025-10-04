@@ -17,6 +17,7 @@ const state = {
           parentNode: document.querySelector("#jitsi-meeting")
         })
     }
+    return active;
   },
   deactivateMeeting: async function () {
     if (active) {
@@ -24,13 +25,7 @@ const state = {
 
         currentMeeting.executeCommand('hangup');
         currentMeeting.dispose();
-
-
-
-
-        setTimeout(() => {
-            active = false;
-        }, 100000)
+        active = false;
     }
   }
 
