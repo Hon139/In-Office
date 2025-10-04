@@ -37,27 +37,7 @@ export class Player extends me.Sprite {
 
   onCollision() {
     // default: let collisions pass through visually (no physical response)
-    // but check if we collided with a Door entity and handle it
-    // arguments passed by melonJS to onCollision are (response, other)
-    // some melonJS builds pass different args; defensively handle both cases
-    // const args = Array.from(arguments);
-    // let other = null;
-    // if (args.length === 1) {
-    //   other = args[0].body ? args[0].body.owner : null;
-    // } else if (args.length >= 2) {
-    //   other = args[1];
-    // }
-
-    // if (other) {
-    //   // if the other object has onCollision and its constructor name contains 'Door', call it
-    //   if (other.constructor && other.constructor.name === 'Door') {
-    //     if (typeof other.onCollision === 'function') {
-    //       other.onCollision(args[0], this);
-    //     }
-    //   }
-    // }
-
-    // return false so melonJS does not resolve the collision physically
-    return false;
+  
+    return true;
   }
 }

@@ -27,10 +27,10 @@ export default class RoomScreen extends me.Stage {
 
     const rect = new SimpleRect(20, 20, 120, 80, "#55aaff");
     const border = new Border(0, 0, 800, 20, "#000000ff");
+    const door = new Door(400, 200, 80, 120, "#ffaa55", me.state.PLAY);
     me.game.world.addChild(border, 5);
-    // const door = new Door(400, 200, 80, 120, "#ffaa55", "play");
+    me.game.world.addChild(door, 5);
     me.game.world.addChild(rect, 5);
-    // me.game.world.addChild(door, 5);
     }
 
   onDestroyEvent() {

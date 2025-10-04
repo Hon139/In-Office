@@ -13,15 +13,8 @@ export class Door extends me.Entity {
         this.body = new me.Body(this);
         this.body.addShape(new me.Rect(0, 0, this.width, this.height));
         this.body.setStatic(true);
-        // mark as a world/action shape so player can detect it
-        if (typeof this.body.setCollisionType === 'function') {
-            this.body.setCollisionType(me.collision.types.WORLD_SHAPE);
-        } else {
-            this.body.collisionType = me.collision.types.WORLD_SHAPE || 0;
-        }
-        if (typeof this.body.setCollisionMask === 'function') {
-            this.body.setCollisionMask(me.collision.types.PLAYER_OBJECT);
-        }
+        this.body.setCollisionMask(me.collision.types.PLAYER_OBJECT);
+        this.body.collisionType = me.collision.types.WORLD_SHAPE;
     }
 
     draw(renderer) {
@@ -32,16 +25,10 @@ export class Door extends me.Entity {
     }
 
     // called when something collides with this door
-    onCollision(response, other) {
-        // // other is the colliding entity (e.g., Player)
-        // // return false to let default collision response happen (no physical response)
-        // // we can trigger level change or event here
-        // console.log("Door.onCollision", { door: this, other });
-        // if (typeof this.stage === "string") {
-        //     // a simple example: change state
-        //     me.state.change(this.stage);
-        // }
-        // return false;
+    onCollision(response) {
+        console.log("collision with door");
+        // me.state.change(this.stage);
+        return false; 
     }
 }
 
