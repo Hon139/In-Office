@@ -2,20 +2,14 @@ import * as me from "melonjs";
 
 // Door as an Entity so it can participate in collisions
 export class Door extends me.Entity {
-    constructor(x, y, w, h, color = "#cc4444") {
+    constructor(x, y, w, h, color = "#cc4444", name) {
         super(x, y, { width: w, height: h });
         this.floating = false;
         this.color = color;
+        this.name = name;
 
         // Set anchor point before creating body
         this.anchorPoint.set(0, 0);
-
-        // // create a static body for collisions
-        // this.body = new me.Body(this);
-        // this.body.addShape(new me.Rect(0, 0, this.width, this.height));
-        // this.body.setStatic(true);
-        // // this.body.setCollisionMask(me.collision.types.PLAYER_OBJECT);
-        // this.body.collisionType = me.collision.types.WORLD_SHAPE;
 
         this.body = new me.Body(this);
         this.body.addShape(new me.Rect(0, 0, w, h));
@@ -38,6 +32,10 @@ export class Door extends me.Entity {
         console.log("collision with door");
         // me.state.change(this.stage);
         return false; 
+    }
+
+    getName() {
+        return this.name;
     }
 }
 

@@ -26,6 +26,6 @@ me.device.onReady(() => {
   me.loader.preload(resources, () => {
     me.state.set(me.state.PLAY, new PlayScreen());
     me.state.set(me.state.ROOM, new RoomScreen());
-    me.state.change(me.state.PLAY);
+    me.state.change(me.state.ROOM);
   });
 });
