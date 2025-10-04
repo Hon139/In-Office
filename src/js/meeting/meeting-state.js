@@ -1,39 +1,39 @@
 
 
 let active = false;
+let currentMeeting = null;
 
-export const JitsiState = {
-  currentRoom: "",
-  activateMeeting: async () => {
+const state = {
+  currentRoom: "creativeandcoolmeetingroom",
+  activateMeeting: async function () {
     if (!active)  {
         console.log("activating meeting...")
         active = true;
-        const api = new JitsiMeetExternalAPI("meet.jit.si/teaaaaaam", {
-          roomName: "myuniquemeetingroomname",
+        console.log(this);
+        currentMeeting = await new JitsiMeetExternalAPI("meet.jit.si", {
+          roomName: this.currentRoom,
           width: 540,
           height: 540,
           parentNode: document.querySelector("#jitsi-meeting")
         })
-
-
-
-        console.log("heyy")
-
-        api.on("readyToClose", (a) => {
-            api.dispose();
-        })
-
-
-        /*setTimeout(() => {
-            api.executeCommand('hangup')
-            api.dispose()
-            setTimeout(() => {
-                active = false;
-            }, 2000)
-        }, 2000);*/
-
     }
-    return;
+  },
+  deactivateMeeting: async function () {
+    if (active) {
+        console.log("deactivating meeting...")
+
+        currentMeeting.executeCommand('hangup');
+        currentMeeting.dispose();
+
+
+
+
+        setTimeout(() => {
+            active = false;
+        }, 100000)
+    }
   }
 
 }
+
+export const JitsiState = state

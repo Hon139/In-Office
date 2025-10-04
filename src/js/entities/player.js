@@ -32,7 +32,10 @@ export class Player extends me.Sprite {
       JitsiState.activateMeeting();
     }
     if (me.input.isKeyPressed("right")) this.body.vel.x =  this.body.maxVel.x;
-    if (me.input.isKeyPressed("up"))    this.body.vel.y = -this.body.maxVel.y;
+    if (me.input.isKeyPressed("up"))    {
+      this.body.vel.y = -this.body.maxVel.y;
+      JitsiState.deactivateMeeting();
+    }
     if (me.input.isKeyPressed("down"))  this.body.vel.y =  this.body.maxVel.y;
 
 
