@@ -7,11 +7,19 @@
     <meta name="mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black">
     <title>melonJS Vite boilerplate</title>
+    <script src='https://meet.jit.si/external_api.js'></script>
   </head>
   <body>
       <!-- Canvas placeholder -->
+      <div id="jitsi-meeting"></div>
       <div id="screen"></div>
+      <script src="https://8x8.vc/libs/lib-jitsi-meet.min.js"></script>
       <script type="module" src="src/index.js"></script>
       <script src="https://cdn.socket.io/4.7.5/socket.io.min.js"></script>
+      <script>
+        window.CONFIG = {
+          WS_URL: "wss://office-network.fly.dev" // or your Render URL
+        };
+      </script>
   </body>
 </html>

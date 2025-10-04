@@ -1,7 +1,9 @@
 import * as me from "melonjs";
+import { MeetingAnchor } from "../entities/meeting-anchor.js"
 import { SocketNet } from "../net.js";
 import { Ghost } from "../entities/ghost.js";
 import { Player } from "../entities/player.js"; // your existing local player
+
 
 export default class PlayScreen extends me.Stage {
   async onResetEvent() {
@@ -15,7 +17,7 @@ export default class PlayScreen extends me.Stage {
 
     // Multiplayer
     this.ghosts = new Map();
-    this.net = new SocketNet("ws://localhost:3000"); // ← your WS URL (wss:// in prod)
+    this.net = new SocketNet(window.CONFIG.WS_URL); // ← your WS URL (wss:// in prod)
     const name = "Guest" + Math.floor(Math.random() * 1000);
     await this.net.connect({ room: "main", name, color: "#8b5cf6" });
 
@@ -72,6 +74,45 @@ export default class PlayScreen extends me.Stage {
   }
 
   onDestroyEvent() {
+    this.net?.disconnect();
+    me.input.unbindAll();
+
+    // Throttle state sends
+    this.lastSend = 0;
+    this.sendHz = 10; // 10 updates per second
+    this.lastX = this.me.pos.x; this.lastY = this.me.pos.y;
+  }
+
+  spawnGhost(p) {
+    if (p.id === this.net.uid) return; // don't spawn self
+    if (this.ghosts.has(p.id)) return;
+    const g = new Ghost(p.x, p.y, { color: p.color, size: 32 });
+    me.game.world.addChild(g, 9);
+    this.ghosts.set(p.id, g);
+  }
+
+  update(dt) {
+    // your Player.update handles movement; just send position if changed (throttled)
+    const now = me.timer.getTime();
+    const moved = (Math.abs(this.me.pos.x - this.lastX) > 1) || (Math.abs(this.me.pos.y - this.lastY) > 1);
+    if (moved && now - this.lastSend > 1000 / this.sendHz) {
+      this.lastSend = now;
+      this.lastX = this.me.pos.x; this.lastY = this.me.pos.y;
+      const dir = "D"; // optional: compute from keys
+      this.net.sendState({ x: this.me.pos.x, y: this.me.pos.y, dir });
+    }
+    return super.update(dt);
+  }
+
+  onDestroyEvent() {
+    me.input.unbindKey(me.input.KEY.LEFT);
+    me.input.unbindKey(me.input.KEY.A);
+    me.input.unbindKey(me.input.KEY.RIGHT);
+    me.input.unbindKey(me.input.KEY.D);
+    me.input.unbindKey(me.input.KEY.UP);
+    me.input.unbindKey(me.input.KEY.W);
+    me.input.unbindKey(me.input.KEY.DOWN);
+    me.input.unbindKey(me.input.KEY.S);
     this.net?.disconnect();
     me.input.unbindAll();
   }
