@@ -1,14 +1,13 @@
-import * as me from "melonjs";
-import { MeetingAnchor } from "../entities/meeting-anchor.js"
-import { SocketNet } from "../net.js";
-import { Ghost } from "../entities/ghost.js";
-import { Player } from "../entities/player.js"; // your existing local player
-
+import * as me from 'melonjs';
+import { MeetingAnchor } from '../entities/meeting-anchor.js';
+import { SocketNet } from '../net.js';
+import { Ghost } from '../entities/ghost.js';
+import { Player } from '../entities/player.js'; // your existing local player
 
 export default class PlayScreen extends me.Stage {
   async onResetEvent() {
     me.game.world.gravity.set(0, 0);
-    me.game.world.addChild(new me.ColorLayer("bg", "#202025"), 0);
+    me.game.world.addChild(new me.ColorLayer('bg', '#202025'), 0);
 
     // Local player
     this.me = new Player(120, 120);
@@ -18,38 +17,42 @@ export default class PlayScreen extends me.Stage {
     // Multiplayer
     this.ghosts = new Map();
     this.net = new SocketNet(window.CONFIG.WS_URL); // ← your WS URL (wss:// in prod)
-    const name = "Guest" + Math.floor(Math.random() * 1000);
-    await this.net.connect({ room: "main", name, color: "#8b5cf6" });
+    const name = 'Guest' + Math.floor(Math.random() * 1000);
+    await this.net.connect({ room: 'main', name, color: '#8b5cf6' });
 
     // Handle server events
     this.net.onEvents((evt) => {
-      if (evt.type === "init") {
+      if (evt.type === 'init') {
         evt.players.forEach((p) => this.spawnGhost(p));
-      } else if (evt.type === "add") {
+      } else if (evt.type === 'add') {
         this.spawnGhost(evt.player);
-      } else if (evt.type === "upd") {
+      } else if (evt.type === 'upd') {
         const g = this.ghosts.get(evt.player.id);
         if (g) g.setTarget(evt.player.x, evt.player.y);
-      } else if (evt.type === "del") {
+      } else if (evt.type === 'del') {
         const g = this.ghosts.get(evt.uid);
-        if (g) { me.game.world.removeChild(g); this.ghosts.delete(evt.uid); }
+        if (g) {
+          me.game.world.removeChild(g);
+          this.ghosts.delete(evt.uid);
+        }
       }
     });
 
     // Input bindings (if not already)
-    me.input.bindKey(me.input.KEY.LEFT,  "left");
-    me.input.bindKey(me.input.KEY.A,     "left");
-    me.input.bindKey(me.input.KEY.RIGHT, "right");
-    me.input.bindKey(me.input.KEY.D,     "right");
-    me.input.bindKey(me.input.KEY.UP,    "up");
-    me.input.bindKey(me.input.KEY.W,     "up");
-    me.input.bindKey(me.input.KEY.DOWN,  "down");
-    me.input.bindKey(me.input.KEY.S,     "down");
+    me.input.bindKey(me.input.KEY.LEFT, 'left');
+    me.input.bindKey(me.input.KEY.A, 'left');
+    me.input.bindKey(me.input.KEY.RIGHT, 'right');
+    me.input.bindKey(me.input.KEY.D, 'right');
+    me.input.bindKey(me.input.KEY.UP, 'up');
+    me.input.bindKey(me.input.KEY.W, 'up');
+    me.input.bindKey(me.input.KEY.DOWN, 'down');
+    me.input.bindKey(me.input.KEY.S, 'down');
 
     // Throttle state sends
     this.lastSend = 0;
     this.sendHz = 10; // 10 updates per second
-    this.lastX = this.me.pos.x; this.lastY = this.me.pos.y;
+    this.lastX = this.me.pos.x;
+    this.lastY = this.me.pos.y;
   }
 
   spawnGhost(p) {
@@ -63,11 +66,13 @@ export default class PlayScreen extends me.Stage {
   update(dt) {
     // your Player.update handles movement; just send position if changed (throttled)
     const now = me.timer.getTime();
-    const moved = (Math.abs(this.me.pos.x - this.lastX) > 1) || (Math.abs(this.me.pos.y - this.lastY) > 1);
+    const moved =
+      Math.abs(this.me.pos.x - this.lastX) > 1 || Math.abs(this.me.pos.y - this.lastY) > 1;
     if (moved && now - this.lastSend > 1000 / this.sendHz) {
       this.lastSend = now;
-      this.lastX = this.me.pos.x; this.lastY = this.me.pos.y;
-      const dir = "D"; // optional: compute from keys
+      this.lastX = this.me.pos.x;
+      this.lastY = this.me.pos.y;
+      const dir = 'D'; // optional: compute from keys
       this.net.sendState({ x: this.me.pos.x, y: this.me.pos.y, dir });
     }
     return super.update(dt);
@@ -80,7 +85,8 @@ export default class PlayScreen extends me.Stage {
     // Throttle state sends
     this.lastSend = 0;
     this.sendHz = 10; // 10 updates per second
-    this.lastX = this.me.pos.x; this.lastY = this.me.pos.y;
+    this.lastX = this.me.pos.x;
+    this.lastY = this.me.pos.y;
   }
 
   spawnGhost(p) {
@@ -94,11 +100,13 @@ export default class PlayScreen extends me.Stage {
   update(dt) {
     // your Player.update handles movement; just send position if changed (throttled)
     const now = me.timer.getTime();
-    const moved = (Math.abs(this.me.pos.x - this.lastX) > 1) || (Math.abs(this.me.pos.y - this.lastY) > 1);
+    const moved =
+      Math.abs(this.me.pos.x - this.lastX) > 1 || Math.abs(this.me.pos.y - this.lastY) > 1;
     if (moved && now - this.lastSend > 1000 / this.sendHz) {
       this.lastSend = now;
-      this.lastX = this.me.pos.x; this.lastY = this.me.pos.y;
-      const dir = "D"; // optional: compute from keys
+      this.lastX = this.me.pos.x;
+      this.lastY = this.me.pos.y;
+      const dir = 'D'; // optional: compute from keys
       this.net.sendState({ x: this.me.pos.x, y: this.me.pos.y, dir });
     }
     return super.update(dt);

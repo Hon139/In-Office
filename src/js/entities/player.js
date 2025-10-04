@@ -1,9 +1,9 @@
-import * as me from "melonjs";
+import * as me from 'melonjs';
 
 export class Player extends me.Sprite {
   constructor(x, y) {
     super(x, y, {
-      image: "player",
+      image: 'player',
     });
 
     this.resize(32, 32);
@@ -14,8 +14,8 @@ export class Player extends me.Sprite {
     this.body.setCollisionMask(me.collision.types.WORLD_SHAPE);
     this.body.collisionType = me.collision.types.PLAYER_OBJECT;
     // movement tuning
-    this.body.setMaxVelocity(2, 2);  // pixels/sec
-    this.body.setFriction(0.0, 0.0);     // top-down feel
+    this.body.setMaxVelocity(2, 2); // pixels/sec
+    this.body.setFriction(0.0, 0.0); // top-down feel
     this.alwaysUpdate = true;
   }
 
@@ -23,10 +23,10 @@ export class Player extends me.Sprite {
     // reset velocity each frame (top-down)
     this.body.vel.set(0, 0);
 
-    if (me.input.isKeyPressed("left"))  this.body.vel.x = -this.body.maxVel.x;
-    if (me.input.isKeyPressed("right")) this.body.vel.x =  this.body.maxVel.x;
-    if (me.input.isKeyPressed("up"))    this.body.vel.y = -this.body.maxVel.y;
-    if (me.input.isKeyPressed("down"))  this.body.vel.y =  this.body.maxVel.y;
+    if (me.input.isKeyPressed('left')) this.body.vel.x = -this.body.maxVel.x;
+    if (me.input.isKeyPressed('right')) this.body.vel.x = this.body.maxVel.x;
+    if (me.input.isKeyPressed('up')) this.body.vel.y = -this.body.maxVel.y;
+    if (me.input.isKeyPressed('down')) this.body.vel.y = this.body.maxVel.y;
 
     // apply physics
     this.body.update(dt);
@@ -39,10 +39,10 @@ export class Player extends me.Sprite {
     // default: let collisions pass through visually (no physical response)
     if (other.body.collisionType === me.collision.types.WORLD_SHAPE) {
       // uncomment the line below to log collisions with world shapes
-      console.log("collided with world shape", other);
+      console.log('collided with world shape', other);
       return true;
     }
-  
+
     return false;
   }
 }
