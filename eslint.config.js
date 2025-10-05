@@ -14,13 +14,6 @@ export default defineConfig([
       'prettier/prettier': 'warn',
     },
   },
-
-  { files: ['**/*.json'] },
-  { files: ['**/*.jsonc'] },
-  { files: ['**/*.json5'] },
-  { files: ['**/*.md'] },
-  { files: ['**/*.css'] },
-
   {
     files: ['**/*'],
     rules: {
