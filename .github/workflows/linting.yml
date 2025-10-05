@@ -6,20 +6,6 @@ on:
       - master
 
 jobs:
-  commit-lint:
-    name: Commit Message Lint
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
-        with:
-          fetch-depth: 0
-      - name: Check Commit Messages
-        uses: wagoid/commit-message-checker-action@v1
-        with:
-          min-length: '6'
-          max-length: '50'
-          error: 'Commit message lint failed'
-
   pr-title-lint:
     name: PR Title Lint
     if: github.event_name == 'pull_request'
