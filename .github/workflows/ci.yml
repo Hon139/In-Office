@@ -75,3 +75,29 @@ jobs:
       with:
         github-token: ${{ secrets.GITHUB_TOKEN }}
         path-to-lcov: ./coverage/lcov.info
+
+  bundle-size:
+    needs: test
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [18.x]
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v3
+    - name: Use Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v3
+      with:
+        node-version: ${{ matrix.node-version }}
+        cache: 'npm'
+    - name: Install dependencies
+      run: npm install
+    - name: Run build
+      run: npm run build
+    - name: Check bundle size
+      uses: pre-act/action-for-bundle-size@v2
+      with:
+        repo-token: "${{ secrets.GITHUB_TOKEN }}"
+        build-script: "build"
+        files: "dist/**/*.js"
+        compression: "gzip"
