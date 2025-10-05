@@ -1,6 +1,8 @@
 let active = false;
 let currentMeeting = null;
 
+import {startAudioAndMicRecording, stopAudioAndMicRecording} from './recorder.js'
+
 const state = {
   profile: {
     email: '',
@@ -30,6 +32,12 @@ const state = {
       active = false;
     }
   },
+  startRecording: async function (callback) {
+    startAudioAndMicRecording(callback)
+  },
+  stopRecording: async function () {
+    stopAudioAndMicRecording()
+  }
   hasAMeeting: function () {
     return active;
   },
