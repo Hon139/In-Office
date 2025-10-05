@@ -106,6 +106,7 @@ export function closeMeeting() {
   showCallUI(false);
   stopAudioAndMicRecording()
   recording = false
+  document.getElementById('jitsi-record').innerHTML = "Start Recording!"
   
   queueMicrotask(() => {
     try { player?.leaveMeeting?.(); } catch (e) {

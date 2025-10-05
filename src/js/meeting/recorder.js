@@ -18,31 +18,36 @@ export async function default_callback (audio) {
     })
     request.then(async (val) => {
         console.log(await val.json())
+    }).catch((error) => {
+        console.warn("POST request to transcription endpoint failed: " + error);
     })
 }
 
 // callback is an asynchronous one-variable function that takes a Blob audio object
 export async function startAudioAndMicRecording (callback) {
+
+    const webAudioOptions = {
+        video: {
+            displaySurface: "window",
+        },
+        audio: true,
+        preferCurrentTab: true
+    }
+    
+    const micAudioOptions = {
+        audio: true
+    }
+    
+    const webAudioPromise = navigator.mediaDevices.getDisplayMedia(webAudioOptions);
+    const micAudioPromise = navigator.mediaDevices.getUserMedia(micAudioOptions);
+
     try {
-        const webAudioOptions = {
-            video: {
-                displaySurface: "window",
-            },
-            audio: true,
-            preferCurrentTab: true
-        }
-    
-        const micAudioOptions = {
-            audio: true
-        }
-    
-        const webAudioPromise = navigator.mediaDevices.getDisplayMedia(webAudioOptions);
-        const micAudioPromise = navigator.mediaDevices.getUserMedia(micAudioOptions);
-    
         // Await for user permissions to get the audio streams
         const a = await Promise.all([webAudioPromise, micAudioPromise])
     
         const dualAudioChunks = [] // Buffer for storing audio
+        webpageStream = a[0]
+        microphoneStream = a[1]
     
             // Combining the two streams via this...
         const audioContext = new AudioContext()
@@ -77,6 +82,20 @@ export async function startAudioAndMicRecording (callback) {
 
     } catch (error) {
         console.log(error)
+        if (webpageStream !== null) {
+            for (const s of webpageStream.getTracks()) {
+                s.stop()
+            }
+        }
+
+        if (microphoneStream !== null) {
+            for (const s of microphoneStream.getTracks()) {
+                s.stop()
+            }
+        }
+
+        webpageStream = null
+
         return false
     }
     
@@ -85,6 +104,20 @@ export async function startAudioAndMicRecording (callback) {
 export function stopAudioAndMicRecording() {
     dualRecorder.stop()
     recording = false
+
+    if (webpageStream !== null) {
+        for (const s of webpageStream.getTracks()) {
+            s.stop()
+        }
+        webpageStream = null
+    }
+
+    if (microphoneStream !== null) {
+        for (const s of microphoneStream.getTracks()) {
+            s.stop()
+        }
+        microphoneStream = null
+    }
 }
 
 export async function isRecording() {
