@@ -64,11 +64,28 @@ export default class PlayScreen extends me.Stage {
     this.lastY = this.me.pos.y;
 
     const meeting_room = new Door(800, 65, 125, 125, '#ff8c8cff', 'Meeting Room');
-    const break_room = new Door(710, 385, 57, 190, '#ff8c8cff', 'Break Room');
-
     me.game.world.addChild(meeting_room, 1);
+
+    const break_room = new Door(710, 385, 57, 190, '#ff8c8cff', 'Break Room');
     me.game.world.addChild(break_room, 1);
 
+    const desk_one = new Door(65, 0, 95, 55, '#a9a9a9ff', 'Evan_Office');
+    me.game.world.addChild(desk_one, 1);
+
+    const desk_two = new Door(0, 65, 33, 90, '#a9a9a9ff', 'Carol_Office');
+    me.game.world.addChild(desk_two, 1);
+
+    const desk_three = new Door(65, 155, 95, 55, '#a9a9a9ff', 'Tyler_Office');
+    me.game.world.addChild(desk_three, 1);
+
+    const desk_four = new Door(0, 255, 33, 90, '#a9a9a9ff', 'Andrew_Office');
+    me.game.world.addChild(desk_four, 1);
+
+    const desk_five = new Door(65, 355, 95, 55, '#a9a9a9ff', 'Spare_Office');
+    me.game.world.addChild(desk_five, 1);
+
+    const desk_six = new Door(65, 445, 95, 95, '#a9a9a9ff', 'President_Office');
+    me.game.world.addChild(desk_six, 1);
   }
 
   spawnGhost(p) {
