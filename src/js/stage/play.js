@@ -6,6 +6,10 @@ import { Player } from '../entities/player.js'; // your existing local player
 
 export default class PlayScreen extends me.Stage {
   async onResetEvent() {
+    me.level.load("trialmap");
+    // const startPosition = me.levelDirector.getCurrentLevel().getObjectByName("playerStart")
+    // this.me = new Player(startPosition.x, startPosition.y);
+
     me.game.world.gravity.set(0, 0);
     me.game.world.addChild(new me.ColorLayer('bg', '#202025'), 0);
 
