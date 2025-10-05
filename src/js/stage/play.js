@@ -3,6 +3,7 @@ import { MeetingAnchor } from '../entities/meeting-anchor.js';
 import { SocketNet } from '../net.js';
 import { Ghost } from '../entities/ghost.js';
 import { Player } from '../entities/player.js'; // your existing local player
+import { Door } from '../lib/door.js';
 
 export default class PlayScreen extends me.Stage {
   async onResetEvent() {
@@ -14,7 +15,7 @@ export default class PlayScreen extends me.Stage {
     me.game.world.addChild(new me.ColorLayer('bg', '#202025'), 0);
 
     // Local player
-    this.me = new Player(1000, 100);
+    this.me = new Player(300, 100);
     me.game.world.addChild(this.me, 100);
     me.game.viewport.follow(this.me.pos, me.game.viewport.AXIS.BOTH, 0.15);
 
@@ -61,6 +62,13 @@ export default class PlayScreen extends me.Stage {
     this.sendHz = 10; // 10 updates per second
     this.lastX = this.me.pos.x;
     this.lastY = this.me.pos.y;
+
+    const meeting_room = new Door(800, 65, 125, 125, '#ff8c8cff', 'Meeting Room');
+    const break_room = new Door(710, 385, 57, 190, '#ff8c8cff', 'Meeting Room');
+
+    me.game.world.addChild(meeting_room, 1);
+    me.game.world.addChild(break_room, 1);
+
   }
 
   spawnGhost(p) {
