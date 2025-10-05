@@ -95,9 +95,10 @@ jobs:
     - name: Run build
       run: npm run build
     - name: Check bundle size
-      uses: preactjs/action-for-bundle-size@v2
+      uses: bundle-size-action/github-action@v1
       with:
-        repo-token: "${{ secrets.GITHUB_TOKEN }}"
-        build-script: "build"
-        files: "dist/**/*.js"
-        compression: "gzip"
+        build-script: "npm run build"
+        github_token: "${{ secrets.GITHUB_TOKEN }}"
+        files:
+          - path: "dist/assets/index-*.js"
+            maxSize: "150 kB"
