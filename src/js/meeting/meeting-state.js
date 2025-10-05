@@ -14,55 +14,55 @@ function showCallUI(show) {
 }
 
 async function ensureVisibleAndSized() {
-  const box = document.getElementById("jitsi-box");
-  const host = document.getElementById("jitsi-meeting");
+  const box = document.getElementById('jitsi-box');
+  const host = document.getElementById('jitsi-meeting');
 
   // 1) Make visible
   showCallUI(true);
-  box.style.display = "block";
+  box.style.display = 'block';
 
   // 2) Guarantee a non-zero size (in case CSS didn’t apply yet)
-  if (!box.style.width)  box.style.width  = "360px";
-  if (!box.style.height) box.style.height = "240px";
+  if (!box.style.width) box.style.width = '360px';
+  if (!box.style.height) box.style.height = '240px';
 
   // 3) Force a reflow, then let the browser paint a frame
   //    (reading offsetWidth triggers layout)
   void box.offsetWidth;
-  await new Promise(r => requestAnimationFrame(r));
+  await new Promise((r) => requestAnimationFrame(r));
 }
 
 function freshContainer() {
-  const host = document.getElementById("jitsi-meeting");
+  const host = document.getElementById('jitsi-meeting');
   // remove any old iframe completely
-  host.innerHTML = "";
+  host.innerHTML = '';
   // create a brand new child each time (no DOM reuse)
-  const el = document.createElement("div");
+  const el = document.createElement('div');
   el.id = `jitsi-container-${++mountSeq}`;
-  el.style.position = "absolute";
-  el.style.inset = "0";
+  el.style.position = 'absolute';
+  el.style.inset = '0';
   host.appendChild(el);
   return el;
 }
 
 export async function openMeeting(roomName, p) {
   player = p;
-  let displayName = player?.displayName || player?.name || window.playerName || "Guest";
+  let displayName = player?.displayName || player?.name || window.playerName || 'Guest';
   const parentNode = document.getElementById('jitsi-meeting');
 
   await ensureVisibleAndSized();
-  
+
   const container = freshContainer();
 
   await new Promise((r) => requestAnimationFrame(r));
 
   if (!window.JitsiMeetExternalAPI) {
-    console.error("Jitsi API not loaded");
+    console.error('Jitsi API not loaded');
     showCallUI(false);
     return;
   }
   const rect = container.getBoundingClientRect();
   if (!rect.width || !rect.height) {
-    console.warn("Jitsi container has zero size; aborting open");
+    console.warn('Jitsi container has zero size; aborting open');
     showCallUI(false);
     return;
   }
@@ -89,7 +89,7 @@ export async function openMeeting(roomName, p) {
     interfaceConfigOverwrite: { MOBILE_APP_PROMO: false },
   });
 
-  document.getElementById("jitsi-leave")?.focus();
+  document.getElementById('jitsi-leave')?.focus();
 }
 
 export function closeMeeting() {
@@ -108,8 +108,10 @@ export function closeMeeting() {
   recording = false
   
   queueMicrotask(() => {
-    try { player?.leaveMeeting?.(); } catch (e) {
-      console.warn("player.leaveMeeting failed:", e);
+    try {
+      player?.leaveMeeting?.();
+    } catch (e) {
+      console.warn('player.leaveMeeting failed:', e);
     }
   });
 }

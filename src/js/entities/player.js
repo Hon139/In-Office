@@ -16,7 +16,7 @@ export class Player extends me.Sprite {
 
     this.anchorPoint.set(0, 0);
 
-    this.name = "player"
+    this.name = 'player';
 
     // physics body & hitbox
     this.body = new me.Body(this);
@@ -55,7 +55,6 @@ export class Player extends me.Sprite {
       }
     } else {
       if (me.input.isKeyPressed('quit')) {
-        console.log('obama');
         closeMeeting();
         this.inAMeeting = false;
         setTimeout(() => {
@@ -80,7 +79,6 @@ export class Player extends me.Sprite {
   onCollision(response, other) {
     if (other instanceof Door) {
       if (!this.collided) {
-        console.log('started to touch');
         this.inAMeeting = true;
         this.meetingCooldown = true;
         openMeeting(other.getName(), this);

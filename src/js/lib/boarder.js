@@ -32,7 +32,6 @@ export class Border extends me.Entity {
   }
 
   onCollision(response, other) {
-    console.log('Border.onCollision', { border: this, other });
     return true;
   }
 }
