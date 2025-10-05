@@ -29,7 +29,7 @@ export class Door extends me.Entity {
 
     // called when something collides with this door
     onCollision(response) {
-        console.log("collision with door");
+        //console.log("collision with door");
         // me.state.change(this.stage);
         return false; 
     }
