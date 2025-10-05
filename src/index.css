@@ -1,3 +1,8 @@
+html, body { height: 100%; margin: 0; }
+body { overflow: hidden; background: #111; }
+#game-root { position: fixed; inset: 0; display: block; }
+#screen { position: absolute; inset: 0; z-index: 1 }
+
 body {
 
     background-color: black;
@@ -24,6 +29,25 @@ body {
     display: block;
 }
 
-#jitsi-meeting {
-    position: absolute;
+/* Jitsi overlay box (hidden until you open a meeting) */
+#jitsi-box {
+  position: absolute;
+  left: 0px; top: 0px;
+  width: 0px; height: 0px;
+  z-index: 2;                 /* above the game canvas */
+  background: #000;           /* optional, helps see bounds */
 }
+
+/* Jitsi iframe fills the box */
+#jitsi-meeting { position: absolute; inset: 0; }
+
+/* Your close button stays on top of the iframe */
+#jitsi-leave {
+  position: absolute; top: 8px; right: 8px; z-index: 3;
+  padding: 6px 10px; border: 0; border-radius: 8px;
+  background: #ef4444; color: #fff; font: 600 14px/1 system-ui;
+  cursor: pointer;
+}
+#jitsi-leave:active { transform: translateY(1px); }
+
+.hidden { display: none !important; }
