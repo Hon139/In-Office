@@ -1,6 +1,6 @@
 import * as me from 'melonjs';
 import { Player } from '../entities/player';
-import {default_callback, stopAudioAndMicRecording, startAudioAndMicRecording, isRecording} from './recorder.js'
+import {default_callback, stopAudioAndMicRecording, startAudioAndMicRecording } from './recorder.js'
 let jitsiApi = null;
 let player = null;
 let recording = false;
@@ -106,6 +106,7 @@ export function closeMeeting() {
   showCallUI(false);
   stopAudioAndMicRecording()
   recording = false
+  document.getElementById('jitsi-record').innerHTML = "Start Recording!"
   
   queueMicrotask(() => {
     try {

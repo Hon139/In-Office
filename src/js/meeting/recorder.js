@@ -1,23 +1,34 @@
 let dualRecorder = null
-let recording = false
 let webpageStream = null
 let microphoneStream = null
 
 export async function default_callback (audio) {
-    window.open(URL.createObjectURL(audio), "_blank")
+    //window.open(URL.createObjectURL(audio), "_blank")
 
     const fd = new FormData()
     fd.append("audio", audio)
 
-    const request = fetch("http://localhost:3069/", { // TODO change the location of this.
+    const request = fetch(window.CONFIG.TR_URL, { // TODO change the location of this.
         method: 'POST',
         body: fd,
         headers: {
-            'Accept': 'application/json',
+            'Accept': 'text/html',
         }, credentials: 'include'
     })
     request.then(async (val) => {
-        console.log(await val.json())
+        if (val.ok){
+            console.log(val)
+            const tr = await val.text()
+            console.log()
+            const newWindow = window.open('', '_blank')
+
+            if (newWindow) {
+                newWindow.document.write(tr)
+                newWindow.document.close()
+            } 
+        } else {
+            console.log("error in backend")
+        }
     })
 }
 
@@ -41,6 +52,9 @@ export async function startAudioAndMicRecording (callback) {
     
         // Await for user permissions to get the audio streams
         const a = await Promise.all([webAudioPromise, micAudioPromise])
+
+        webpageStream = a[0]
+        microphoneStream = a[1]
     
         const dualAudioChunks = [] // Buffer for storing audio
     
@@ -71,7 +85,6 @@ export async function startAudioAndMicRecording (callback) {
     
         dualRecorder.start()
 
-        recording = true
         console.log("success!!!!!");
         return true
 
@@ -83,10 +96,17 @@ export async function startAudioAndMicRecording (callback) {
 }
 
 export function stopAudioAndMicRecording() {
-    dualRecorder.stop()
-    recording = false
-}
+    if (webpageStream != null) {
+        for (const str of webpageStream.getTracks()) {
+            str.stop()
+        }
+    }
 
-export async function isRecording() {
-    return recording
+    if (microphoneStream != null) {
+        for (const str of microphoneStream.getTracks()) {
+            str.stop()
+        }
+    }
+
+    dualRecorder.stop()
 }
