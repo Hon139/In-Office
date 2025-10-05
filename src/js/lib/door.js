@@ -1,4 +1,4 @@
-import * as me from "melonjs";
+import * as me from 'melonjs';
 
 // Door as an Entity so it can participate in collisions
 export class Door extends me.Entity {
@@ -8,8 +8,8 @@ export class Door extends me.Entity {
         this.color = color;
         this.name = name;
 
-        // Set anchor point before creating body
-        this.anchorPoint.set(0, 0);
+    // Set anchor point before creating body
+    this.anchorPoint.set(0, 0);
 
         this.body = new me.Body(this);
         this.body.addShape(new me.Rect(0, 0, w, h));
@@ -38,4 +38,3 @@ export class Door extends me.Entity {
         return this.name;
     }
 }
-

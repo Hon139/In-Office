@@ -5,7 +5,7 @@ export class Player extends me.Sprite {
 
   constructor(x, y) {
     super(x, y, {
-      image: "player",
+      image: 'player',
     });
 
     this.resize(32, 32);

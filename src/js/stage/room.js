@@ -1,31 +1,29 @@
-
-import * as me from "melonjs";
-import { Player } from "../entities/player.js";
-import { SimpleRect } from "../lib/Shapes.js";
-import { Door } from "../lib/door.js";
-import { Border } from "../lib/boarder.js";
+import * as me from 'melonjs';
+import { Player } from '../entities/player.js';
+import { SimpleRect } from '../lib/Shapes.js';
+import { Door } from '../lib/door.js';
+import { Border } from '../lib/boarder.js';
 
 export default class RoomScreen extends me.Stage {
+  onResetEvent() {
+    me.game.world.addChild(new me.ColorLayer('bg', '#bfbfd2ff'), 0);
+    me.input.bindKey(me.input.KEY.LEFT, 'left');
+    me.input.bindKey(me.input.KEY.A, 'left');
+    me.input.bindKey(me.input.KEY.RIGHT, 'right');
+    me.input.bindKey(me.input.KEY.D, 'right');
+    me.input.bindKey(me.input.KEY.UP, 'up');
+    me.input.bindKey(me.input.KEY.W, 'up');
+    me.input.bindKey(me.input.KEY.DOWN, 'down');
+    me.input.bindKey(me.input.KEY.S, 'down');
+    me.input.bindKey(me.input.KEY.Q,     "quit");
+    me.input.bindKey(me.input.KEY.E,     "enter");
 
-    onResetEvent() {
-        me.game.world.addChild(new me.ColorLayer("bg", "#bfbfd2ff"), 0);
-        me.input.bindKey(me.input.KEY.LEFT,  "left");
-        me.input.bindKey(me.input.KEY.A,     "left");
-        me.input.bindKey(me.input.KEY.RIGHT, "right");
-        me.input.bindKey(me.input.KEY.D,     "right");
-        me.input.bindKey(me.input.KEY.UP,    "up");
-        me.input.bindKey(me.input.KEY.W,     "up");
-        me.input.bindKey(me.input.KEY.DOWN,  "down");
-        me.input.bindKey(me.input.KEY.S,     "down");
-        me.input.bindKey(me.input.KEY.Q,     "quit");
-        me.input.bindKey(me.input.KEY.E,     "enter");
-    
-        // disable gravity
-        me.game.world.gravity.set(0, 0);
-    
-        // add player
-        const player = new Player(100, 100);
-        me.game.world.addChild(player, 10);
+    // disable gravity
+    me.game.world.gravity.set(0, 0);
+
+    // add player
+    const player = new Player(100, 100);
+    me.game.world.addChild(player, 10);
 
     const rect = new SimpleRect(20, 20, 120, 80, "#55aaff");
     const border = new Border(0, 0, 800, 20, "#000000ff");

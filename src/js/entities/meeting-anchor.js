@@ -1,4 +1,4 @@
-import * as me from "melonjs";
+import * as me from 'melonjs';
 
 export class MeetingAnchor extends me.Sprite {
     constructor(x,y, meetingName) {
@@ -36,5 +36,3 @@ export class MeetingAnchor extends me.Sprite {
     return false;
   }
 }
-
-
