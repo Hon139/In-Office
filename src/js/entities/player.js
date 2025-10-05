@@ -1,6 +1,7 @@
 import * as me from 'melonjs';
 import { openMeeting, closeMeeting } from '../meeting/meeting-state.js';
 import { Door } from '../lib/door.js';
+import { Exit } from '../lib/exit.js';
 
 export class Player extends me.Sprite {
   constructor(x, y) {
@@ -78,7 +79,12 @@ export class Player extends me.Sprite {
 
   onCollision(response, other) {
     if (other instanceof Door) {
+      console.log(other.getName());
       if (!this.collided) {
+        if ("Exit".toLowerCase() === other.getName().toLowerCase()) {
+          me.state.change(me.state.CLOCKOUT);
+          return false;
+        }
         this.inAMeeting = true;
         this.meetingCooldown = true;
         openMeeting(other.getName(), this);

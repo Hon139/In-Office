@@ -5,6 +5,7 @@ import { Ghost } from '../entities/ghost.js';
 import { Player } from '../entities/player.js'; // your existing local player
 import { Door } from '../lib/door.js';
 import { Border } from '../lib/boarder.js';
+import { Exit } from '../lib/exit.js';
 
 export default class PlayScreen extends me.Stage {
   async onResetEvent() {
@@ -16,7 +17,7 @@ export default class PlayScreen extends me.Stage {
     me.game.world.addChild(new me.ColorLayer('bg', '#202025'), 0);
 
     // Local player
-    this.me = new Player(685, 65);
+    this.me = new Player(685, 75);
     me.game.world.addChild(this.me, 100);
     me.game.viewport.follow(this.me.pos, me.game.viewport.AXIS.BOTH, 0.15);
 
@@ -87,6 +88,9 @@ export default class PlayScreen extends me.Stage {
 
     const desk_six = new Door(65, 445, 95, 95, '#a9a9a9ff', 'President_Office');
     me.game.world.addChild(desk_six, 1);
+
+    const exit = new Door(675, 0, 60, 1, '#a9a9a9ff', 'Exit');
+    me.game.world.addChild(exit, 1);
 
     const border = new Border(0, 0, 960, 640, '#000000ff');
     me.game.world.addChild(border, 1);
