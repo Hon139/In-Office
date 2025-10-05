@@ -1,5 +1,5 @@
 # Office Ours
-Make your home 
+Make your work talk work better.
 
 # Inspiration
 Working remotely can often be isolating. You don't see your coworkers or your boss and you don't know what they're doing. Existing applications do not list out members in ways that naturally fit into human perception. Just imagine any group of people - are they lined up similar to the profiles on the side of a messaging app? No! The existing applications have that clear disadvantage to virtual environments. We thought that mimicking the environment of the office virtually would bring the experience of working in an office at home.
