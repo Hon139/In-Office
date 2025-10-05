@@ -6,7 +6,7 @@ import { Player } from '../entities/player.js'; // your existing local player
 
 export default class PlayScreen extends me.Stage {
   async onResetEvent() {
-    me.level.load("trialmap");
+    me.level.load('VirtualOfficeMock');
     // const startPosition = me.levelDirector.getCurrentLevel().getObjectByName("playerStart")
     // this.me = new Player(startPosition.x, startPosition.y);
 
@@ -14,15 +14,16 @@ export default class PlayScreen extends me.Stage {
     me.game.world.addChild(new me.ColorLayer('bg', '#202025'), 0);
 
     // Local player
-    this.me = new Player(100, 100);
+    this.me = new Player(1000, 500);
     me.game.world.addChild(this.me, 10);
     me.game.viewport.follow(this.me.pos, me.game.viewport.AXIS.BOTH, 0.15);
 
     // Multiplayer
     this.ghosts = new Map();
     this.net = new SocketNet(window.CONFIG.WS_URL); // ← your WS URL (wss:// in prod)
-    const name = 'Guest' + Math.floor(Math.random() * 1000);
-    await this.net.connect({ room: 'main', name, color: '#8b5cf6' });
+    const name = window.playerName + Math.floor(Math.random() * 1000);
+    console.log("play avatar: " + window.playerAvatar);
+    await this.net.connect({ room: 'main', name, avatar: window.playerAvatar });
 
     // Handle server events
     this.net.onEvents((evt) => {
@@ -53,6 +54,7 @@ export default class PlayScreen extends me.Stage {
     me.input.bindKey(me.input.KEY.S, 'down');
     me.input.bindKey(me.input.KEY.Q, 'quit');
     me.input.bindKey(me.input.KEY.E, 'enter');
+    me.input.bindKey(me.input.KEY.R, 'record');
 
     // Throttle state sends
     this.lastSend = 0;
@@ -62,9 +64,10 @@ export default class PlayScreen extends me.Stage {
   }
 
   spawnGhost(p) {
+    console.log(p.avatar + " " + p.id);
     if (p.id === this.net.uid) return; // don't spawn self
     if (this.ghosts.has(p.id)) return;
-    const g = new Ghost(p.x, p.y, { color: p.color, size: 32 });
+    const g = new Ghost(p.x, p.y, p.avatar);
     me.game.world.addChild(g, 9);
     this.ghosts.set(p.id, g);
   }
@@ -93,6 +96,8 @@ export default class PlayScreen extends me.Stage {
     me.input.unbindKey(me.input.KEY.W);
     me.input.unbindKey(me.input.KEY.DOWN);
     me.input.unbindKey(me.input.KEY.S);
+    me.input.unbindKey(me.input.KEY.Q);
+    me.input.unbindKey(me.input.KEY.E);
     this.net?.disconnect();
     this.lastSend = 0;
     this.sendHz = 10; // 10 updates per second

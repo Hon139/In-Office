@@ -1,14 +1,18 @@
 import * as me from 'melonjs';
 
 export class Ghost extends me.Sprite {
-  constructor(x, y, { color = '#93c5fd', size = 32 } = {}) {
+  constructor(x, y, avatar) {
     // Use a colored rectangle renderable (no external asset), or swap to your 'player' image if you prefer
-    const canvas = me.video.createCanvas(size, size);
-    const ctx = canvas.getContext('2d');
-    ctx.fillStyle = color;
-    ctx.fillRect(0, 0, size, size);
+    super(x, y, {
+      image: avatar,
+    });
 
-    super(x, y, { image: canvas });
+    this.resize(32, 32);
+    const canvas = me.video.createCanvas(32, 32);
+    const ctx = canvas.getContext('2d');
+    ctx.fillStyle = '#93c5fd';
+    ctx.fillRect(0, 0, 32, 32);
+
     this.anchorPoint.set(0, 0);
     this.tx = x;
     this.ty = y; // interpolation targets

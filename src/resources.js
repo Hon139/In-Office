@@ -1,8 +1,10 @@
 export const resources = [
   { name: 'player', type: 'image', src: 'data/img/player.jpg' },
+  { name: 'a1', type: 'image', src: 'data/img/avatars/a1.jpg' },
+  { name: 'a2', type: 'image', src: 'data/img/avatars/a2.jpg' },
+  { name: 'a3', type: 'image', src: 'data/img/avatars/a3.jpg' },
+  { name: 'a4', type: 'image', src: 'data/img/avatars/a4.jpg' },
   { name: 'meeting-anchor', type: 'image', src: 'data/img/portal.png' },
-
-
 
   /* Graphics.
      * @example
@@ -61,27 +63,26 @@ export const resources = [
     { name: "trialmap",            type: "tmx",    src: "data/map/trialmap.tmx" },
     { name: "VirtualOfficeMock",              type: "tmx",    src: "data/map/VirtualOfficeMockv3.tmx" },
 
-    /* Background music.
-     * @example
-     * { name: "example_bgm", type: "audio", src: "data/bgm/" },
-     */
 
-    /* Sound effects.
-     * @example
-     * { name: "example_sfx", type: "audio", src: "data/sfx/" }
-     */
+  /* Background music.
+   * @example
+   * { name: "example_bgm", type: "audio", src: "data/bgm/" },
+   */
 
+  /* Sound effects.
+   * @example
+   * { name: "example_sfx", type: "audio", src: "data/sfx/" }
+   */
 
-    /* Atlases
-     * @example
-     * { name: "example_tps", type: "json", src: "data/img/example_tps.json" },
-     */
-    // texturePacker
+  /* Atlases
+   * @example
+   * { name: "example_tps", type: "json", src: "data/img/example_tps.json" },
+   */
+  // texturePacker
 
-    /* Bitmap Font
-    * @example
-    * { name: "example_fnt", type: "image", src: "data/img/example_fnt.png" },
-    * { name: "example_fnt", type: "binary", src: "data/img/example_fnt.fnt" },
-    */
-
+  /* Bitmap Font
+   * @example
+   * { name: "example_fnt", type: "image", src: "data/img/example_fnt.png" },
+   * { name: "example_fnt", type: "binary", src: "data/img/example_fnt.fnt" },
+   */
 ];

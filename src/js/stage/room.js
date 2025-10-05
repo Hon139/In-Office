@@ -18,6 +18,7 @@ export default class RoomScreen extends me.Stage {
     me.input.bindKey(me.input.KEY.S, 'down');
     me.input.bindKey(me.input.KEY.Q, 'quit');
     me.input.bindKey(me.input.KEY.E, 'enter');
+    me.input.bindKey(me.input.KEY.R, 'record');
 
     // disable gravity
     me.game.world.gravity.set(0, 0);
@@ -45,5 +46,8 @@ export default class RoomScreen extends me.Stage {
     me.input.unbindKey(me.input.KEY.W);
     me.input.unbindKey(me.input.KEY.DOWN);
     me.input.unbindKey(me.input.KEY.S);
+    me.input.unbindKey(me.input.KEY.Q);
+    me.input.unbindKey(me.input.KEY.E);
+    me.input.unbindKey(me.input.KEY.R);
   }
 }
