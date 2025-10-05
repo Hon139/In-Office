@@ -50,4 +50,13 @@ body {
 }
 #jitsi-leave:active { transform: translateY(1px); }
 
+/* Your close button stays on top of the iframe */
+#jitsi-record {
+  position: absolute; top: 8px; left: 8px; z-index: 3;
+  padding: 6px 10px; border: 0; border-radius: 8px;
+  background: #ef4444; color: #fff; font: 600 14px/1 system-ui;
+  cursor: pointer;
+}
+#jitsi-leave:active { transform: translateY(1px); }
+
 .hidden { display: none !important; }
