@@ -34,22 +34,23 @@ export async function default_callback (audio) {
 
 // callback is an asynchronous one-variable function that takes a Blob audio object
 export async function startAudioAndMicRecording (callback) {
+
+    const webAudioOptions = {
+        video: {
+            displaySurface: "window",
+        },
+        audio: true,
+        preferCurrentTab: true
+    }
+    
+    const micAudioOptions = {
+        audio: true
+    }
+    
+    const webAudioPromise = navigator.mediaDevices.getDisplayMedia(webAudioOptions);
+    const micAudioPromise = navigator.mediaDevices.getUserMedia(micAudioOptions);
+
     try {
-        const webAudioOptions = {
-            video: {
-                displaySurface: "window",
-            },
-            audio: true,
-            preferCurrentTab: true
-        }
-    
-        const micAudioOptions = {
-            audio: true
-        }
-    
-        const webAudioPromise = navigator.mediaDevices.getDisplayMedia(webAudioOptions);
-        const micAudioPromise = navigator.mediaDevices.getUserMedia(micAudioOptions);
-    
         // Await for user permissions to get the audio streams
         const a = await Promise.all([webAudioPromise, micAudioPromise])
 
@@ -57,6 +58,8 @@ export async function startAudioAndMicRecording (callback) {
         microphoneStream = a[1]
     
         const dualAudioChunks = [] // Buffer for storing audio
+        webpageStream = a[0]
+        microphoneStream = a[1]
     
             // Combining the two streams via this...
         const audioContext = new AudioContext()
@@ -90,17 +93,51 @@ export async function startAudioAndMicRecording (callback) {
 
     } catch (error) {
         console.log(error)
+        if (webpageStream !== null) {
+            for (const s of webpageStream.getTracks()) {
+                s.stop()
+            }
+        }
+
+        if (microphoneStream !== null) {
+            for (const s of microphoneStream.getTracks()) {
+                s.stop()
+            }
+        }
+
+        webpageStream = null
+
         return false
     }
     
 }
 
 export function stopAudioAndMicRecording() {
+<<<<<<< HEAD
     if (webpageStream != null) {
         for (const str of webpageStream.getTracks()) {
             str.stop()
         }
     }
+=======
+    dualRecorder.stop()
+    recording = false
+
+    if (webpageStream !== null) {
+        for (const s of webpageStream.getTracks()) {
+            s.stop()
+        }
+        webpageStream = null
+    }
+
+    if (microphoneStream !== null) {
+        for (const s of microphoneStream.getTracks()) {
+            s.stop()
+        }
+        microphoneStream = null
+    }
+}
+>>>>>>> eac7bf78a06194ef538ab8bb5454b64171a8c753
 
     if (microphoneStream != null) {
         for (const str of microphoneStream.getTracks()) {
