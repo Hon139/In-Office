@@ -1,6 +1,9 @@
 let dualRecorder = null
 let webpageStream = null
 let microphoneStream = null
+let audioContext = null
+let webAudioSource = null
+let micAudioSource = null
 
 export async function default_callback (audio) {
     //window.open(URL.createObjectURL(audio), "_blank")
@@ -8,18 +11,19 @@ export async function default_callback (audio) {
     const fd = new FormData()
     fd.append("audio", audio)
 
-    const request = fetch(window.CONFIG.TR_URL, { // TODO change the location of this.
-        method: 'POST',
-        body: fd,
-        headers: {
-            'Accept': 'text/html',
-        }, credentials: 'include'
-    })
-    request.then(async (val) => {
-        if (val.ok){
-            console.log(val)
-            const tr = await val.text()
-            console.log()
+    try {
+        const response = await fetch(window.CONFIG.TR_URL, {
+            method: 'POST',
+            body: fd,
+            headers: {
+                'Accept': 'text/html',
+            }, 
+            credentials: 'include'
+        })
+        
+        if (response.ok){
+            console.log(response)
+            const tr = await response.text()
             const newWindow = window.open('', '_blank')
 
             if (newWindow) {
@@ -29,7 +33,9 @@ export async function default_callback (audio) {
         } else {
             console.log("error in backend")
         }
-    })
+    } catch (error) {
+        console.error("Error in default_callback:", error)
+    }
 }
 
 // callback is an asynchronous one-variable function that takes a Blob audio object
@@ -62,9 +68,9 @@ export async function startAudioAndMicRecording (callback) {
         microphoneStream = a[1]
     
             // Combining the two streams via this...
-        const audioContext = new AudioContext()
-        const webAudioSource = audioContext.createMediaStreamSource(a[0])
-        const micAudioSource = audioContext.createMediaStreamSource(a[1])
+        audioContext = new AudioContext()
+        webAudioSource = audioContext.createMediaStreamSource(a[0])
+        micAudioSource = audioContext.createMediaStreamSource(a[1])
         const destination = audioContext.createMediaStreamDestination()
     
         webAudioSource.connect(destination)
@@ -120,25 +126,66 @@ export async function startAudioAndMicRecording (callback) {
 }
 
 export function stopAudioAndMicRecording() {
+    // Stop the recorder first
+    if (dualRecorder != null && dualRecorder.state !== 'inactive'){
+        try {
+            dualRecorder.stop()
+        } catch (e) {
+            console.warn('Failed to stop recorder:', e)
+        }
+    }
+    dualRecorder = null
+
+    // Disconnect audio nodes before stopping streams
+    try {
+        if (webAudioSource) {
+            webAudioSource.disconnect()
+            webAudioSource = null
+        }
+        if (micAudioSource) {
+            micAudioSource.disconnect()
+            micAudioSource = null
+        }
+    } catch (e) {
+        console.warn('Failed to disconnect audio sources:', e)
+    }
+
+    // Close the audio context
+    if (audioContext != null && audioContext.state !== 'closed') {
+        try {
+            audioContext.close()
+        } catch (e) {
+            console.warn('Failed to close audio context:', e)
+        }
+    }
+    audioContext = null
+
+    // Stop media stream tracks
     if (webpageStream != null) {
         for (const str of webpageStream.getTracks()) {
             // Check if track is still active before stopping
             if (str.readyState !== 'ended') {
-                str.stop()
+                try {
+                    str.stop()
+                } catch (e) {
+                    console.warn('Failed to stop webpage track:', e)
+                }
             }
         }
     }
+    webpageStream = null
 
     if (microphoneStream != null) {
         for (const str of microphoneStream.getTracks()) {
             // Check if track is still active before stopping
             if (str.readyState !== 'ended') {
-                str.stop()
+                try {
+                    str.stop()
+                } catch (e) {
+                    console.warn('Failed to stop microphone track:', e)
+                }
             }
         }
     }
-
-    if (dualRecorder != null && dualRecorder.state !== 'inactive'){
-        dualRecorder.stop()
-    }
+    microphoneStream = null
 }
