@@ -76,7 +76,7 @@ export async function openMeeting(roomName, p) {
   // create the iframe
   jitsiApi = new JitsiMeetExternalAPI('meet.jit.si', {
     roomName,
-    parentNode,
+    parentNode: container,
     width: me.game.viewport.width,
     height: me.game.viewport.height,
     userInfo: { displayName },
@@ -102,7 +102,11 @@ export function closeMeeting() {
   } catch {}
   jitsiApi = null;
   document.getElementById('jitsi-box').style.display = 'none';
-  document.getElementById('jitsi-meeting').innerHTML = '';
+  try {
+    document.getElementById('jitsi-meeting').innerHTML = '';
+  } catch (e) {
+    console.warn('Failed to clear jitsi-meeting container:', e);
+  }
   showCallUI(false);
   
   try {
