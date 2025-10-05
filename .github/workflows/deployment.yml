@@ -78,7 +78,7 @@ jobs:
         run: |
           max_attempts=3
           attempt=1
-          until npx netlify-cli@latest deploy --dir=public --prod --site=$NETLIFY_SITE_ID --auth=$NETLIFY_AUTH_TOKEN; do
+          until npx netlify-cli@latest deploy --dir=public --prod --build=false --site=$NETLIFY_SITE_ID --auth=$NETLIFY_AUTH_TOKEN; do
             if [ $attempt -ge $max_attempts ]; then
               echo "Deploy failed after $max_attempts attempts"
               exit 1
@@ -99,6 +99,12 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 18
+          cache: 'npm'
+
       - name: Download build artifact
         uses: actions/download-artifact@v4
         with:
@@ -108,44 +114,27 @@ jobs:
       - name: Deploy preview to Netlify
         id: netlify-deploy
         run: |
-          max_attempts=3
-          attempt=1
-          until OUTPUT=$(npx netlify-cli deploy --dir=public --json --site=$NETLIFY_SITE_ID --auth=$NETLIFY_AUTH_TOKEN); do
-            if [ $attempt -ge $max_attempts ]; then
-              echo "Deploy failed after $max_attempts attempts"
-              exit 1
-            fi
-            echo "Deploy attempt $attempt failed, retrying in 10 seconds..."
-            sleep 10
-            attempt=$((attempt + 1))
-          done
-          echo "$OUTPUT"
-          PREVIEW_URL=$(echo "$OUTPUT" | jq -r '.deploy_url')
-          echo "preview_url=$PREVIEW_URL" >> $GITHUB_OUTPUT
-          echo "### 🚀 Preview Deploy" >> $GITHUB_STEP_SUMMARY
-          echo "" >> $GITHUB_STEP_SUMMARY
-          echo "Preview URL: $PREVIEW_URL" >> $GITHUB_STEP_SUMMARY
+          output=$(npx netlify-cli deploy --dir=public --build=false --site=$NETLIFY_SITE_ID --auth=$NETLIFY_AUTH_TOKEN --json)
+          echo "deploy_url=$(echo $output | jq -r '.deploy_url')" >> $GITHUB_OUTPUT
+          echo "Preview deployed to: $(echo $output | jq -r '.deploy_url')"
         env:
           NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
           NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
 
       - name: Comment PR with preview URL
         uses: actions/github-script@v7
-        if: github.event_name == 'pull_request'
         with:
           script: |
-            const previewUrl = '${{ steps.netlify-deploy.outputs.preview_url }}';
-            const comment = `## 🚀 Preview Deployment
-            
-            Your preview deployment is ready!
-            
-            **Preview URL:** ${previewUrl}
-            
-            Built from commit: ${context.sha.substring(0, 7)}`;
-            
             github.rest.issues.createComment({
               issue_number: context.issue.number,
               owner: context.repo.owner,
               repo: context.repo.repo,
-              body: comment
-            });
+              body: `## 🚀 Preview Deployment
+              
+              ✅ Preview successfully deployed to Netlify!
+              
+              **Preview URL:** ${{ steps.netlify-deploy.outputs.deploy_url }}
+              
+              ---
+              *This preview will be available until the next deployment or for 7 days, whichever comes first.*`
+            })
