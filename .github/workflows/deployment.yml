@@ -5,7 +5,23 @@ on:
   workflow_dispatch:
 
 jobs:
+  check-secrets:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check for required secrets
+        run: |
+          if [ -z "${{ secrets.NETLIFY_AUTH_TOKEN }}" ]; then
+            echo "Error: The NETLIFY_AUTH_TOKEN secret is not set. Please add it to your repository secrets."
+            exit 1
+          fi
+          if [ -z "${{ secrets.NETLIFY_SITE_ID }}" ]; then
+            echo "Error: The NETLIFY_SITE_ID secret is not set. Please add it to your repository secrets."
+            exit 1
+          fi
+          echo "OK: All required secrets are present."
+
   build:
+    needs: check-secrets
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
