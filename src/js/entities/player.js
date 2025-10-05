@@ -24,7 +24,7 @@ export class Player extends me.Sprite {
     this.body.collisionType = me.collision.types.PLAYER_OBJECT;
     this.body.setCollisionMask(me.collision.types.WORLD_SHAPE | me.collision.types.PLAYER_OBJECT);
     // movement tuning
-    this.body.setMaxVelocity(2, 2); // pixels/sec
+    this.body.setMaxVelocity(1.5, 1.5); // pixels/sec
     this.body.setFriction(0.0, 0.0); // top-down feel
     this.inAMeeting = false;
     this.collided = false;
