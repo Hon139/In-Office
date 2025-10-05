@@ -53,6 +53,7 @@ export default class PlayScreen extends me.Stage {
     me.input.bindKey(me.input.KEY.S, 'down');
     me.input.bindKey(me.input.KEY.Q, 'quit');
     me.input.bindKey(me.input.KEY.E, 'enter');
+    me.input.bindKey(me.input.KEY.R, 'record');
 
     // Throttle state sends
     this.lastSend = 0;
@@ -93,6 +94,8 @@ export default class PlayScreen extends me.Stage {
     me.input.unbindKey(me.input.KEY.W);
     me.input.unbindKey(me.input.KEY.DOWN);
     me.input.unbindKey(me.input.KEY.S);
+    me.input.unbindKey(me.input.KEY.Q);
+    me.input.unbindKey(me.input.KEY.E);
     this.net?.disconnect();
     this.lastSend = 0;
     this.sendHz = 10; // 10 updates per second
