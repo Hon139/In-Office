@@ -54,7 +54,7 @@ jobs:
           name: build
           path: public
 
-  deploy-production:
+  deploy-PRODUCTION-RELEASE:
     needs: build
     runs-on: ubuntu-latest
     if: github.ref == 'refs/heads/master' && github.event_name == 'workflow_dispatch'
