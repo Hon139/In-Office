@@ -1,7 +1,7 @@
 // src/js/start-game.js
-import * as me from "melonjs";
-import { SocketNet } from "./net.js";
-import PlayScreen from "./stage/play.js";
+import * as me from 'melonjs';
+import { SocketNet } from './net.js';
+import PlayScreen from './stage/play.js';
 
 export async function startGame({ token, profile }) {
   // init melonJS if you weren’t already doing it here

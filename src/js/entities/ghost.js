@@ -10,17 +10,18 @@ export class Ghost extends me.Sprite {
 
     super(x, y, { image: canvas });
     this.anchorPoint.set(0, 0);
-    this.tx = x; this.ty = y; // interpolation targets
-    this.lerp = 12;           // higher = snappier
+    this.tx = x;
+    this.ty = y; // interpolation targets
+    this.lerp = 12; // higher = snappier
 
     this.body = new me.Body(this);
-    this.body.addShape(new me.Rect(0,0,this.width,this.height));
+    this.body.addShape(new me.Rect(0, 0, this.width, this.height));
     this.body.gravityScale = 0;
-    this.body.setKinematic?.(true);                  // obstacle
+    this.body.setKinematic?.(true); // obstacle
     this.body.collisionType = me.collision.types.PLAYER_OBJECT;
     this.body.setCollisionMask?.(me.collision.types.PLAYER_OBJECT);
-    this.onCollision = () => false;                  // don’t get pushed
-    this.body.updateBounds?.()
+    this.onCollision = () => false; // don’t get pushed
+    this.body.updateBounds?.();
 
     this.alwaysUpdate = true;
   }

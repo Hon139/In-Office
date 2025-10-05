@@ -7,9 +7,9 @@ const envPath = path.join(repoRoot, '.env');
 function parseEnv(content) {
   return content
     .split(/\r?\n/)
-    .map(line => line.trim())
-    .filter(line => line && !line.startsWith('#'))
-    .map(line => {
+    .map((line) => line.trim())
+    .filter((line) => line && !line.startsWith('#'))
+    .map((line) => {
       const idx = line.indexOf('=');
       if (idx === -1) return null;
       const key = line.slice(0, idx).trim();
@@ -36,9 +36,9 @@ describe('.env file', () => {
     // ensure there is at least one variable
     expect(pairs.length).toBeGreaterThan(0);
 
-    const bad = pairs.filter(p => p.val === '' || p.val.toLowerCase() === 'undefined');
+    const bad = pairs.filter((p) => p.val === '' || p.val.toLowerCase() === 'undefined');
     if (bad.length > 0) {
-      const keys = bad.map(b => b.key).join(', ');
+      const keys = bad.map((b) => b.key).join(', ');
       throw new Error(`Found undefined/empty values for keys: ${keys}`);
     }
   });

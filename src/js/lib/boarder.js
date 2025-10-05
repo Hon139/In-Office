@@ -13,7 +13,11 @@ export class Border extends me.Entity {
 
     // create a static body for collisions
     this.body = new me.Body(this);
-    this.body.addShape(new me.Rect(0, 0, this.width, this.height));
+    this.body.addShape(new me.Rect(0, -1, this.width, 1));
+    this.body.addShape(new me.Rect(0, this.height, this.width, 1));
+    this.body.addShape(new me.Rect(-1, 0, 1, this.height));
+    this.body.addShape(new me.Rect(this.width, 0, 1, this.height));
+
     this.body.setStatic(true);
     this.body.setCollisionMask(me.collision.types.PLAYER_OBJECT);
     this.body.collisionType = me.collision.types.WORLD_SHAPE;
