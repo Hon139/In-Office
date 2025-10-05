@@ -6,24 +6,19 @@
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <link rel="stylesheet" href="./src/index.css">
     <title>melonJS Vite boilerplate</title>
     <script src='https://meet.jit.si/external_api.js'></script>
-    <style> 
-
-      #jitsi-meeting {
-        position: absolute; 
-        left: 0; 
-        right: 0; 
-        margin-inline: auto; 
-        width: fit-content;
-      }
-
-    </style>
   </head>
   <body>
       <!-- Canvas placeholder -->
-      <div id="jitsi-meeting"></div>
-      <div id="screen"></div>
+    <section id="game-root">
+      <div id="jitsi-box" class="hidden">
+        <div id="jitsi-meeting"></div>
+      </div>
+      <button id="jitsi-leave" class="hidden" type="button" aria-label="Leave call">✕ Leave</button>
+      <div id="screen"></div>   <!-- this id MUST match parent:"screen" -->
+    </section>
       <script src="https://8x8.vc/libs/lib-jitsi-meet.min.js"></script>
       <script type="module" src="src/index.js"></script>
       <script src="https://cdn.socket.io/4.7.5/socket.io.min.js"></script>
