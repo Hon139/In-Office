@@ -80,7 +80,6 @@ export class Player extends me.Sprite {
 
   onCollision(response, other) {
     if (other instanceof Door) {
-    
         console.log(response);
         if (!this.collided) {
           console.log("started to touch");
