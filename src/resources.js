@@ -57,6 +57,8 @@ export const resources = [
     { name: "tv", type:"tsx", src: "data/map/tv.tsx" },
     { name: "oneset", type:"tsx", src: "data/map/oneset.tsx" },
     { name: "twoset", type:"tsx", src: "data/map/twoset.tsx" },
+    { name: "lunchroom", type:"tsx", src: "data/map/lunchroom.tsx" },
+    { name: "meeting-room", type:"tsx", src: "data/map/meeting-room.tsx" },
 
     /* Maps.
      * @example
@@ -64,7 +66,7 @@ export const resources = [
      * { name: "example01", type: "tmx", src: "data/map/example01.json" },
      */
     { name: "trialmap",            type: "tmx",    src: "data/map/trialmap.tmx" },
-    { name: "VirtualOfficeMock",              type: "tmx",    src: "data/map/VirtualOfficeMockv3.json" },
+    { name: "VirtualOfficeMock",              type: "tmx",    src: "data/map/VirtualOfficeMockv3.tmx" },
 
 
   /* Background music.
