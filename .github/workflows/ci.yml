@@ -72,7 +72,7 @@ jobs:
         echo "" >> $GITHUB_STEP_SUMMARY
         echo "| File | Size |" >> $GITHUB_STEP_SUMMARY
         echo "|------|------|" >> $GITHUB_STEP_SUMMARY
-        for file in dist/assets/*.js; do
+        for file in public/assets/*.js; do
           if [ -f "$file" ]; then
             size=$(du -h "$file" | cut -f1)
             filename=$(basename "$file")
@@ -80,4 +80,4 @@ jobs:
           fi
         done
         echo "" >> $GITHUB_STEP_SUMMARY
-        echo "Total dist size: $(du -sh dist | cut -f1)" >> $GITHUB_STEP_SUMMARY
+        echo "Total build size: $(du -sh public | cut -f1)" >> $GITHUB_STEP_SUMMARY
