@@ -1,5 +1,6 @@
 import * as me from "melonjs";
 import { JitsiState } from "../meeting/meeting-state.js"
+import { Door } from "../lib/door.js"
 
 export class Player extends me.Sprite {
 
@@ -78,13 +79,16 @@ export class Player extends me.Sprite {
   }
 
   onCollision(response, other) {
-    console.log(response);
-    if (!this.collided) {
-      console.log("started to touch");
-      this.inAMeeting = true;
-      this.meetingCooldown = true;
-      JitsiState.activateMeeting(other.getName())
-      this.collided = true;
+    if (other instanceof Door) {
+    
+        console.log(response);
+        if (!this.collided) {
+          console.log("started to touch");
+          this.inAMeeting = true;
+          this.meetingCooldown = true;
+          JitsiState.activateMeeting(other.getName())
+          this.collided = true;
+        }
     }
 
     return true;
