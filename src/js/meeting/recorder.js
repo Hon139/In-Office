@@ -95,17 +95,24 @@ export async function startAudioAndMicRecording (callback) {
         console.log(error)
         if (webpageStream !== null) {
             for (const s of webpageStream.getTracks()) {
-                s.stop()
+                // Check if track is still active before stopping
+                if (s.readyState !== 'ended') {
+                    s.stop()
+                }
             }
         }
 
         if (microphoneStream !== null) {
             for (const s of microphoneStream.getTracks()) {
-                s.stop()
+                // Check if track is still active before stopping
+                if (s.readyState !== 'ended') {
+                    s.stop()
+                }
             }
         }
 
         webpageStream = null
+        microphoneStream = null
 
         return false
     }
@@ -115,17 +122,23 @@ export async function startAudioAndMicRecording (callback) {
 export function stopAudioAndMicRecording() {
     if (webpageStream != null) {
         for (const str of webpageStream.getTracks()) {
-            str.stop()
+            // Check if track is still active before stopping
+            if (str.readyState !== 'ended') {
+                str.stop()
+            }
         }
     }
 
     if (microphoneStream != null) {
         for (const str of microphoneStream.getTracks()) {
-            str.stop()
+            // Check if track is still active before stopping
+            if (str.readyState !== 'ended') {
+                str.stop()
+            }
         }
     }
 
-    if (dualRecorder != null){
+    if (dualRecorder != null && dualRecorder.state !== 'inactive'){
         dualRecorder.stop()
     }
 }

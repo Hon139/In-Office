@@ -104,7 +104,13 @@ export function closeMeeting() {
   document.getElementById('jitsi-box').style.display = 'none';
   document.getElementById('jitsi-meeting').innerHTML = '';
   showCallUI(false);
-  stopAudioAndMicRecording()
+  
+  try {
+    stopAudioAndMicRecording()
+  } catch (e) {
+    console.warn('stopAudioAndMicRecording failed:', e);
+  }
+  
   recording = false
   document.getElementById('jitsi-record').innerHTML = "Start Recording!"
   
@@ -121,8 +127,8 @@ export async function recordMeeting() {
   if (recording) { // Stop recording!!!!
     console.log("stopping recording")
     stopAudioAndMicRecording()
-      document.getElementById('jitsi-record').innerHTML = "Start Recording!"
-    recording = true
+    document.getElementById('jitsi-record').innerHTML = "Start Recording!"
+    recording = false
   } else {
     console.log("starting recording")
     if (await startAudioAndMicRecording(default_callback)) {
