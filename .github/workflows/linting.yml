@@ -8,24 +8,17 @@ on:
 jobs:
   commit-lint:
     name: Commit Message Lint
-    if: github.event_name == 'push'
     runs-on: ubuntu-latest
     steps:
-      - name: Check commit message length
-        run: |
-          commit_message="${{ github.event.head_commit.message }}"
-          subject_line=$(echo "$commit_message" | head -n 1)
-          len=${#subject_line}
-          echo "Checking commit message subject: \"$subject_line\""
-          if [ "$len" -le 6 ]; then
-            echo "Error: Commit message subject is too short (must be > 6 characters)."
-            exit 1
-          fi
-          if [ "$len" -ge 50 ]; then
-            echo "Error: Commit message subject is too long (must be < 50 characters)."
-            exit 1
-          fi
-          echo "Commit message lint passed."
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+      - name: Check Commit Messages
+        uses: wagoid/commit-message-checker-action@v1
+        with:
+          min-length: '6'
+          max-length: '50'
+          error: 'Commit message lint failed'
 
   pr-title-lint:
     name: PR Title Lint
