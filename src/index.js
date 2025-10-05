@@ -9,6 +9,10 @@ me.device.onReady(() => {
   me.loader.preload(resources, () => {
     me.state.set(me.state.PLAY, new PlayScreen());
     me.state.set(me.state.ROOM, new RoomScreen());
-    me.state.change(me.state.PLAY);
+    
+    // Use me.timer.defer to change the state in the next frame
+    me.timer.defer(() => {
+      me.state.change(me.a_state.PLAY);
+    });
   });
 });
