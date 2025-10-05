@@ -2,11 +2,12 @@ import * as me from 'melonjs';
 
 // Door as an Entity so it can participate in collisions
 export class Door extends me.Entity {
-    constructor(x, y, w, h, color = "#cc4444", name) {
+    constructor(x, y, w, h, color = "#cc4444", name, stage) {
         super(x, y, { width: w, height: h });
         this.floating = false;
         this.color = color;
         this.name = name;
+        this.stage = stage;
 
     // Set anchor point before creating body
     this.anchorPoint.set(0, 0);
@@ -30,7 +31,7 @@ export class Door extends me.Entity {
     // called when something collides with this door
     onCollision(response) {
         console.log("collision with door");
-        // me.state.change(this.stage);
+        me.state.change(this.stage);
         return false; 
     }
 
