@@ -81,40 +81,6 @@ export default class PlayScreen extends me.Stage {
   }
 
   onDestroyEvent() {
-    this.net?.disconnect();
-    me.input.unbindAll();
-
-    // Throttle state sends
-    this.lastSend = 0;
-    this.sendHz = 10; // 10 updates per second
-    this.lastX = this.me.pos.x;
-    this.lastY = this.me.pos.y;
-  }
-
-  spawnGhost(p) {
-    if (p.id === this.net.uid) return; // don't spawn self
-    if (this.ghosts.has(p.id)) return;
-    const g = new Ghost(p.x, p.y, { color: p.color, size: 32 });
-    me.game.world.addChild(g, 9);
-    this.ghosts.set(p.id, g);
-  }
-
-  update(dt) {
-    // your Player.update handles movement; just send position if changed (throttled)
-    const now = me.timer.getTime();
-    const moved =
-      Math.abs(this.me.pos.x - this.lastX) > 1 || Math.abs(this.me.pos.y - this.lastY) > 1;
-    if (moved && now - this.lastSend > 1000 / this.sendHz) {
-      this.lastSend = now;
-      this.lastX = this.me.pos.x;
-      this.lastY = this.me.pos.y;
-      const dir = 'D'; // optional: compute from keys
-      this.net.sendState({ x: this.me.pos.x, y: this.me.pos.y, dir });
-    }
-    return super.update(dt);
-  }
-
-  onDestroyEvent() {
     me.input.unbindKey(me.input.KEY.LEFT);
     me.input.unbindKey(me.input.KEY.A);
     me.input.unbindKey(me.input.KEY.RIGHT);
@@ -124,6 +90,10 @@ export default class PlayScreen extends me.Stage {
     me.input.unbindKey(me.input.KEY.DOWN);
     me.input.unbindKey(me.input.KEY.S);
     this.net?.disconnect();
-    me.input.unbindAll();
+    this.lastSend = 0;
+    this.sendHz = 10; // 10 updates per second
+    this.lastX = this.me.pos.x;
+    this.lastY = this.me.pos.y;
+  
   }
 }
