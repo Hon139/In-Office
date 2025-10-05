@@ -54,7 +54,7 @@ jobs:
           name: build
           path: public
 
-  deploy-production:
+  deploy-PRODUCTION-RELEASE:
     needs: build
     runs-on: ubuntu-latest
     if: github.ref == 'refs/heads/master' && github.event_name == 'workflow_dispatch'
@@ -81,7 +81,7 @@ jobs:
         run: |
           max_attempts=3
           attempt=1
-          until npx netlify-cli@latest deploy --dir=public --prod --site=$NETLIFY_SITE_ID --auth=$NETLIFY_AUTH_TOKEN; do
+          until npx netlify-cli@latest deploy --dir=public --prod-if-unlocked --site=$NETLIFY_SITE_ID --auth=$NETLIFY_AUTH_TOKEN; do
             if [ $attempt -ge $max_attempts ]; then
               echo "Deploy failed after $max_attempts attempts"
               exit 1
