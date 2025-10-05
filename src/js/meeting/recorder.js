@@ -108,5 +108,8 @@ export function stopAudioAndMicRecording() {
         }
     }
 
-    dualRecorder.stop()
+    if (dualRecorder == null){
+    
+        dualRecorder.stop()
+    }
 }
