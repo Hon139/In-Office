@@ -1,10 +1,6 @@
 name: Linting Conventions
 
 on:
-  push:
-    branches:
-      - master
-      - 'chore/**'
   pull_request:
     branches:
       - master
