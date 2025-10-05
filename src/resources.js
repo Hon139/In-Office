@@ -29,6 +29,7 @@ export const resources = [
     { name: "lunchroom", type:"image", src: "data/img/lunchroom.png" },
     { name: "meeting-room", type:"image", src: "data/img/meeting-room.png" },
     { name: "tv", type:"image", src: "data/img/tv.png" },
+    { name: "oneset", type:"image", src: "data/img/oneset.jpeg" },
 
 
     /* Tilesets.
@@ -53,6 +54,7 @@ export const resources = [
     { name: "counter2", type:"tsx", src: "data/map/counter2.tsx" },
     { name: "counter3", type:"tsx", src: "data/map/counter3.tsx" },
     { name: "tv", type:"tsx", src: "data/map/tv.tsx" },
+    { name: "oneset", type:"tsx", src: "data/map/oneset.tsx" },
     
 
     /* Maps.
@@ -61,7 +63,7 @@ export const resources = [
      * { name: "example01", type: "tmx", src: "data/map/example01.json" },
      */
     { name: "trialmap",            type: "tmx",    src: "data/map/trialmap.tmx" },
-    { name: "VirtualOfficeMock",              type: "tmx",    src: "data/map/VirtualOfficeMockv3.tmx" },
+    { name: "VirtualOfficeMock",              type: "tmx",    src: "data/map/VirtualOfficeMockv3.json" },
 
 
   /* Background music.

@@ -14,8 +14,8 @@ export default class PlayScreen extends me.Stage {
     me.game.world.addChild(new me.ColorLayer('bg', '#202025'), 0);
 
     // Local player
-    this.me = new Player(1000, 500);
-    me.game.world.addChild(this.me, 10);
+    this.me = new Player(1000, 100);
+    me.game.world.addChild(this.me, 100);
     me.game.viewport.follow(this.me.pos, me.game.viewport.AXIS.BOTH, 0.15);
 
     // Multiplayer
