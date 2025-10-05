@@ -1,0 +1,27 @@
+name: Linting Conventions
+
+on:
+  pull_request:
+    branches:
+      - master
+
+jobs:
+  pr-title-lint:
+    name: PR Title Lint
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check PR title length
+        run: |
+          pr_title="${{ github.event.pull_request.title }}"
+          len=${#pr_title}
+          echo "Checking PR title: \"$pr_title\""
+          if [ "$len" -le 6 ]; then
+            echo "Error: PR title is too short (must be > 6 characters)."
+            exit 1
+          fi
+          if [ "$len" -ge 100 ]; then
+            echo "Error: PR title is too long (must be < 100 characters)."
+            exit 1
+          fi
+          echo "PR title lint passed."
