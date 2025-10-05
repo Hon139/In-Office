@@ -22,7 +22,8 @@ export default class PlayScreen extends me.Stage {
     this.ghosts = new Map();
     this.net = new SocketNet(window.CONFIG.WS_URL); // ← your WS URL (wss:// in prod)
     const name = 'Guest' + Math.floor(Math.random() * 1000);
-    await this.net.connect({ room: 'main', name, color: '#8b5cf6' });
+    console.log("play avatar: " + window.playerAvatar);
+    await this.net.connect({ room: 'main', name, avatar: window.playerAvatar });
 
     // Handle server events
     this.net.onEvents((evt) => {
@@ -63,9 +64,10 @@ export default class PlayScreen extends me.Stage {
   }
 
   spawnGhost(p) {
+    console.log(p.avatar);
     if (p.id === this.net.uid) return; // don't spawn self
     if (this.ghosts.has(p.id)) return;
-    const g = new Ghost(p.x, p.y, { color: p.color, size: 32 });
+    const g = new Ghost(p.x, p.y, p.avatar);
     me.game.world.addChild(g, 9);
     this.ghosts.set(p.id, g);
   }

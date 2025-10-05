@@ -7,12 +7,37 @@
     <meta name="mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black">
     <link rel="stylesheet" href="./src/index.css">
-    <title>melonJS Vite boilerplate</title>
+    <title>Office Ours</title>
     <script src='https://meet.jit.si/external_api.js'></script>
   </head>
   <body>
+    <!-- Landing screen -->
+    <section id="landing" style="min-height:100vh;display:grid;place-items:center;">
+      <div style="display:grid;gap:12px;max-width:420px;width:92%;">
+        <h1 style="margin:0;font:600 20px system-ui;">Join the office</h1>
+
+        <input id="name" placeholder="Your name" maxlength="24"
+              style="padding:10px 12px;border-radius:8px;border:1px solid #d1d5db;font:16px system-ui;" />
+
+        <div id="avatars" style="display:grid;grid-template-columns:repeat(4,1fr);gap:10px;">
+          <!-- buttons get filled by main.js or hardcode them: -->
+          <button class="av" data-src="./data/img/avatars/a1.jpg"></button>
+          <button class="av" data-src="./data/img/avatars/a2.jpg"></button>
+          <button class="av" data-src="./data/img/avatars/a3.jpg"></button>
+          <button class="av" data-src="./data/img/avatars/a4.jpg"></button>
+        </div>
+
+        <button id="start"
+          style="padding:10px 12px;border:0;border-radius:8px;background:#16a34a;color:#fff;
+                font:600 16px system-ui;cursor:pointer;">
+          Enter office
+        </button>
+
+        <p id="msg" style="color:#ef4444;font:14px system-ui;margin:6px 0 0;display:none;"></p>
+      </div>
+    </section>
       <!-- Canvas placeholder -->
-    <section id="game-root">
+    <section id="game-root" style="display:none;position:fixed;inset:0;">
       <div id="jitsi-box" class="hidden">
         <div id="jitsi-meeting"></div>
       </div>
@@ -20,13 +45,13 @@
       <button id="jitsi-record" class="hidden" type="button" aria-label="Record call">Start recording</button>
       <div id="screen"></div>   <!-- this id MUST match parent:"screen" -->
     </section>
-      <script src="https://8x8.vc/libs/lib-jitsi-meet.min.js"></script>
-      <script type="module" src="src/index.js"></script>
-      <script src="https://cdn.socket.io/4.7.5/socket.io.min.js"></script>
-      <script>
-        window.CONFIG = {
-          WS_URL: "wss://office-network.fly.dev" // or your Render URL
-        };
-      </script>
+    <script src="https://8x8.vc/libs/lib-jitsi-meet.min.js"></script>
+    <script type="module" src="/src/main.js"></script>
+    <script src="https://cdn.socket.io/4.7.5/socket.io.min.js"></script>
+    <script>
+      window.CONFIG = {
+        WS_URL: "wss://office-network.fly.dev" // or your Render URL
+      };
+    </script>
   </body>
 </html>

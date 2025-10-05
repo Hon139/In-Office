@@ -1,5 +1,9 @@
 export const resources = [
   { name: 'player', type: 'image', src: 'data/img/player.jpg' },
+  { name: 'a1', type: 'image', src: 'data/img/avatars/a1.jpg' },
+  { name: 'a2', type: 'image', src: 'data/img/avatars/a2.jpg' },
+  { name: 'a3', type: 'image', src: 'data/img/avatars/a3.jpg' },
+  { name: 'a4', type: 'image', src: 'data/img/avatars/a4.jpg' },
   { name: 'meeting-anchor', type: 'image', src: 'data/img/portal.png' },
 
   /* Graphics.

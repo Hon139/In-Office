@@ -5,12 +5,12 @@ export class SocketNet {
     this.uid = null;
     this.cb = null;
   }
-  connect({ room = 'main', name = 'Guest', color = '#60a5fa' } = {}) {
+  connect({ room = 'main', name = 'Guest', avatar = "" } = {}) {
     return new Promise((resolve) => {
       this.sock = window.io(this.url, { transports: ['websocket'] });
       this.sock.on('connect', () => {
         this.uid = this.sock.id;
-        this.sock.emit('join', { roomId: room, name, color });
+        this.sock.emit('join', { roomId: room, name, image: avatar });
         resolve({ uid: this.uid });
       });
 
