@@ -52,9 +52,6 @@ jobs:
           node-version: 18
           cache: 'npm'
 
-      - name: Install Netlify CLI
-        run: npm install -g netlify-cli
-
       - name: Download build artifact
         uses: actions/download-artifact@v4
         with:
@@ -63,7 +60,7 @@ jobs:
 
       - name: Deploy to Netlify
         run: |
-          netlify deploy --dir=public --prod --site=$NETLIFY_SITE_ID --auth=$NETLIFY_AUTH_TOKEN
+          npx netlify-cli deploy --dir=public --prod --site=$NETLIFY_SITE_ID --auth=$NETLIFY_AUTH_TOKEN
         env:
           NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
           NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
@@ -76,9 +73,6 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Install Netlify CLI
-        run: npm install -g netlify-cli
-
       - name: Download build artifact
         uses: actions/download-artifact@v4
         with:
@@ -88,7 +82,7 @@ jobs:
       - name: Deploy preview to Netlify
         id: netlify-deploy
         run: |
-          OUTPUT=$(netlify deploy --dir=public --json --site=$NETLIFY_SITE_ID --auth=$NETLIFY_AUTH_TOKEN)
+          OUTPUT=$(npx netlify-cli deploy --dir=public --json --site=$NETLIFY_SITE_ID --auth=$NETLIFY_AUTH_TOKEN)
           echo "$OUTPUT"
           PREVIEW_URL=$(echo "$OUTPUT" | jq -r '.deploy_url')
           echo "preview_url=$PREVIEW_URL" >> $GITHUB_OUTPUT
