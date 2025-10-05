@@ -6,7 +6,7 @@ import { Player } from '../entities/player.js'; // your existing local player
 
 export default class PlayScreen extends me.Stage {
   async onResetEvent() {
-    me.level.load('trialmap');
+    me.level.load('VirtualOfficeMock');
     // const startPosition = me.levelDirector.getCurrentLevel().getObjectByName("playerStart")
     // this.me = new Player(startPosition.x, startPosition.y);
 
@@ -14,14 +14,14 @@ export default class PlayScreen extends me.Stage {
     me.game.world.addChild(new me.ColorLayer('bg', '#202025'), 0);
 
     // Local player
-    this.me = new Player(120, 120);
-    me.game.world.addChild(this.me, 10);
+    this.me = new Player(1000, 100);
+    me.game.world.addChild(this.me, 100);
     me.game.viewport.follow(this.me.pos, me.game.viewport.AXIS.BOTH, 0.15);
 
     // Multiplayer
     this.ghosts = new Map();
     this.net = new SocketNet(window.CONFIG.WS_URL); // ← your WS URL (wss:// in prod)
-    const name = 'Guest' + Math.floor(Math.random() * 1000);
+    const name = window.playerName + Math.floor(Math.random() * 1000);
     console.log("play avatar: " + window.playerAvatar);
     await this.net.connect({ room: 'main', name, avatar: window.playerAvatar });
 
@@ -64,7 +64,7 @@ export default class PlayScreen extends me.Stage {
   }
 
   spawnGhost(p) {
-    console.log(p.avatar);
+    console.log(p.avatar + " " + p.id);
     if (p.id === this.net.uid) return; // don't spawn self
     if (this.ghosts.has(p.id)) return;
     const g = new Ghost(p.x, p.y, p.avatar);
