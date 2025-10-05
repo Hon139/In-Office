@@ -113,31 +113,11 @@ export async function startAudioAndMicRecording (callback) {
 }
 
 export function stopAudioAndMicRecording() {
-<<<<<<< HEAD
     if (webpageStream != null) {
         for (const str of webpageStream.getTracks()) {
             str.stop()
         }
     }
-=======
-    dualRecorder.stop()
-    recording = false
-
-    if (webpageStream !== null) {
-        for (const s of webpageStream.getTracks()) {
-            s.stop()
-        }
-        webpageStream = null
-    }
-
-    if (microphoneStream !== null) {
-        for (const s of microphoneStream.getTracks()) {
-            s.stop()
-        }
-        microphoneStream = null
-    }
-}
->>>>>>> eac7bf78a06194ef538ab8bb5454b64171a8c753
 
     if (microphoneStream != null) {
         for (const str of microphoneStream.getTracks()) {
