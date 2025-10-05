@@ -114,7 +114,7 @@ jobs:
       - name: Deploy preview to Netlify
         id: netlify-deploy
         run: |
-          output=$(npx netlify-cli@latest deploy --dir=public --build=false --site=$NETLIFY_SITE_ID --auth=$NETLIFY_AUTH_TOKEN --json)
+          output=$(npx netlify-cli@latest deploy --dir=public --site=$NETLIFY_SITE_ID --auth=$NETLIFY_AUTH_TOKEN --json)
           echo "deploy_url=$(echo $output | jq -r '.deploy_url')" >> $GITHUB_OUTPUT
           echo "Preview deployed to: $(echo $output | jq -r '.deploy_url')"
         env:
