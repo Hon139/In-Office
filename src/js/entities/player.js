@@ -1,5 +1,5 @@
 import * as me from 'melonjs';
-import { JitsiState } from '../meeting/meeting-state.js';
+import { openMeeting, closeMeeting } from '../meeting/meeting-state.js';
 import { Door } from '../lib/door.js';
 
 export class Player extends me.Sprite {
@@ -15,6 +15,8 @@ export class Player extends me.Sprite {
     ctx.fillRect(0, 0, 32, 32);
 
     this.anchorPoint.set(0, 0);
+
+    this.name = "player"
 
     // physics body & hitbox
     this.body = new me.Body(this);
@@ -54,7 +56,7 @@ export class Player extends me.Sprite {
     } else {
       if (me.input.isKeyPressed('quit')) {
         console.log('obama');
-        JitsiState.deactivateMeeting();
+        closeMeeting();
         this.inAMeeting = false;
         setTimeout(() => {
           this.tempControl = false;
@@ -71,16 +73,19 @@ export class Player extends me.Sprite {
     // attend meeting
   }
 
+  leaveMeeting() {
+    this.inAMeeting = false;
+  }
+
   onCollision(response, other) {
     if (other instanceof Door) {
-        console.log(response);
-        if (!this.collided) {
-          console.log("started to touch");
-          this.inAMeeting = true;
-          this.meetingCooldown = true;
-          JitsiState.activateMeeting(other.getName())
-          this.collided = true;
-        }
+      if (!this.collided) {
+        console.log('started to touch');
+        this.inAMeeting = true;
+        this.meetingCooldown = true;
+        openMeeting(other.getName(), this);
+        this.collided = true;
+      }
     }
 
     return true;
