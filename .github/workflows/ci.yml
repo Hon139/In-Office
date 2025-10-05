@@ -97,7 +97,6 @@ jobs:
     - name: Check bundle size
       uses: bundle-size-action/github-action@v1
       with:
-        build-script: "npm run build"
         github_token: "${{ secrets.GITHUB_TOKEN }}"
         files:
           - path: "dist/assets/index-*.js"
