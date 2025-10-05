@@ -64,7 +64,7 @@ export default class PlayScreen extends me.Stage {
     this.lastY = this.me.pos.y;
 
     const meeting_room = new Door(800, 65, 125, 125, '#ff8c8cff', 'Meeting Room');
-    const break_room = new Door(710, 385, 57, 190, '#ff8c8cff', 'Meeting Room');
+    const break_room = new Door(710, 385, 57, 190, '#ff8c8cff', 'Break Room');
 
     me.game.world.addChild(meeting_room, 1);
     me.game.world.addChild(break_room, 1);
