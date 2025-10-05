@@ -30,6 +30,7 @@ export const resources = [
     { name: "meeting-room", type:"image", src: "data/img/meeting-room.png" },
     { name: "tv", type:"image", src: "data/img/tv.png" },
     { name: "oneset", type:"image", src: "data/img/oneset.jpeg" },
+    { name: "twoset", type:"image", src: "data/img/twoset.png" },
 
 
     /* Tilesets.
@@ -55,7 +56,7 @@ export const resources = [
     { name: "counter3", type:"tsx", src: "data/map/counter3.tsx" },
     { name: "tv", type:"tsx", src: "data/map/tv.tsx" },
     { name: "oneset", type:"tsx", src: "data/map/oneset.tsx" },
-    
+    { name: "twoset", type:"tsx", src: "data/map/twoset.tsx" },
 
     /* Maps.
      * @example
