@@ -6,6 +6,7 @@ import { Border } from '../lib/boarder.js';
 
 export default class RoomScreen extends me.Stage {
   onResetEvent() {
+    me.level.load("VirtualOfficeMock");
     me.game.world.addChild(new me.ColorLayer('bg', '#bfbfd2ff'), 0);
     me.input.bindKey(me.input.KEY.LEFT, 'left');
     me.input.bindKey(me.input.KEY.A, 'left');
