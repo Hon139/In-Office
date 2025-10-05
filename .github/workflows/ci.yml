@@ -1,10 +1,9 @@
 name: CI
 
 on:
-  push:
-    branches: [ "master" ]
   pull_request:
-    branches: [ "master" ]
+    branches: [ "**" ]
+  workflow_dispatch:
 
 jobs:
   lint:
@@ -28,7 +27,7 @@ jobs:
       run: npm run lint
 
   test:
-    needs: lint
+    # needs: lint
     runs-on: ubuntu-latest
     strategy:
       matrix:
@@ -50,7 +49,7 @@ jobs:
     - name: Run build
       run: npm run build
 
-  coverage:
+  bundle-size:
     needs: test
     runs-on: ubuntu-latest
     strategy:
@@ -66,12 +65,20 @@ jobs:
         cache: 'npm'
     - name: Install dependencies
       run: npm install
-    - name: Create .env file
-      run: cp template.env .env
-    - name: Run tests with coverage
-      run: npm run coverage
-    - name: Upload coverage to Coveralls
-      uses: coverallsapp/github-action@v2
-      with:
-        github-token: ${{ secrets.GITHUB_TOKEN }}
-        path-to-lcov: ./coverage/lcov.info
+    - name: Run build
+      run: npm run build
+    - name: Check bundle size
+      run: |
+        echo "## Bundle Size Report" >> $GITHUB_STEP_SUMMARY
+        echo "" >> $GITHUB_STEP_SUMMARY
+        echo "| File | Size |" >> $GITHUB_STEP_SUMMARY
+        echo "|------|------|" >> $GITHUB_STEP_SUMMARY
+        for file in public/assets/*.js; do
+          if [ -f "$file" ]; then
+            size=$(du -h "$file" | cut -f1)
+            filename=$(basename "$file")
+            echo "| $filename | $size |" >> $GITHUB_STEP_SUMMARY
+          fi
+        done
+        echo "" >> $GITHUB_STEP_SUMMARY
+        echo "Total build size: $(du -sh public | cut -f1)" >> $GITHUB_STEP_SUMMARY

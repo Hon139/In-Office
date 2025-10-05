@@ -32,7 +32,7 @@
     "lint:fix": "eslint -c eslint.config.js . --ext .js,.jsx,.ts,.tsx --fix",
     "format": "prettier --write \"**/*.{js,jsx,ts,tsx,json,css,md}\"",
     "test": "node --experimental-vm-modules node_modules/jest/bin/jest.js --colors",
-    "coverage": "jest --coverage"
+    "coverage": "node --experimental-vm-modules node_modules/jest/bin/jest.js --coverage"
   },
   "dependencies": {
     "@melonjs/debug-plugin": "^14.8.3",
