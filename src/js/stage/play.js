@@ -4,6 +4,7 @@ import { SocketNet } from '../net.js';
 import { Ghost } from '../entities/ghost.js';
 import { Player } from '../entities/player.js'; // your existing local player
 import { Door } from '../lib/door.js';
+import { Border } from '../lib/boarder.js';
 
 export default class PlayScreen extends me.Stage {
   async onResetEvent() {
@@ -86,6 +87,9 @@ export default class PlayScreen extends me.Stage {
 
     const desk_six = new Door(65, 445, 95, 95, '#a9a9a9ff', 'President_Office');
     me.game.world.addChild(desk_six, 1);
+
+    const border = new Border(0, 0, 960, 640, '#000000ff');
+    me.game.world.addChild(border, 1);
   }
 
   spawnGhost(p) {
