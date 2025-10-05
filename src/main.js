@@ -62,9 +62,9 @@ async function start() {
   await startGame(); // if you don't have bootGame, export a startGame() that runs your me.video.init block
 
   // connect to server and include name+avatar
-  const net = new SocketNet(window.CONFIG.WS_URL);
-  await net.connect({ room: "main", name, avatar });
-  window.net = net; // if your scenes read it
+//   const net = new SocketNet(window.CONFIG.WS_URL);
+//   await net.connect({ room: "main", name, avatar });
+//   window.net = net; // if your scenes read it
 }
 
 window.addEventListener("DOMContentLoaded", () => {
