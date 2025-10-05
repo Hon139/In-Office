@@ -60,7 +60,17 @@ jobs:
 
       - name: Deploy to Netlify
         run: |
-          npx netlify-cli deploy --dir=public --prod --site=$NETLIFY_SITE_ID --auth=$NETLIFY_AUTH_TOKEN
+          max_attempts=3
+          attempt=1
+          until npx netlify-cli deploy --dir=public --prod --site=$NETLIFY_SITE_ID --auth=$NETLIFY_AUTH_TOKEN; do
+            if [ $attempt -ge $max_attempts ]; then
+              echo "Deploy failed after $max_attempts attempts"
+              exit 1
+            fi
+            echo "Deploy attempt $attempt failed, retrying in 10 seconds..."
+            sleep 10
+            attempt=$((attempt + 1))
+          done
         env:
           NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
           NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
@@ -82,7 +92,17 @@ jobs:
       - name: Deploy preview to Netlify
         id: netlify-deploy
         run: |
-          OUTPUT=$(npx netlify-cli deploy --dir=public --json --site=$NETLIFY_SITE_ID --auth=$NETLIFY_AUTH_TOKEN)
+          max_attempts=3
+          attempt=1
+          until OUTPUT=$(npx netlify-cli deploy --dir=public --json --site=$NETLIFY_SITE_ID --auth=$NETLIFY_AUTH_TOKEN); do
+            if [ $attempt -ge $max_attempts ]; then
+              echo "Deploy failed after $max_attempts attempts"
+              exit 1
+            fi
+            echo "Deploy attempt $attempt failed, retrying in 10 seconds..."
+            sleep 10
+            attempt=$((attempt + 1))
+          done
           echo "$OUTPUT"
           PREVIEW_URL=$(echo "$OUTPUT" | jq -r '.deploy_url')
           echo "preview_url=$PREVIEW_URL" >> $GITHUB_OUTPUT
