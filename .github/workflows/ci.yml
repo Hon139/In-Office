@@ -95,7 +95,7 @@ jobs:
     - name: Run build
       run: npm run build
     - name: Check bundle size
-      uses: pre-act/action-for-bundle-size@v2
+      uses: preactjs/action-for-bundle-size@v2
       with:
         repo-token: "${{ secrets.GITHUB_TOKEN }}"
         build-script: "build"
