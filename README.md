@@ -1,4 +1,4 @@
-# Office Ours
+# Office Hours
 *Make your home office better.*
 
 # Inspiration
